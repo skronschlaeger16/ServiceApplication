@@ -1,6 +1,15 @@
 <div style="text-align:center">
 <h1>Service Application</h1>
 
+<nav>
+    <a routerLink="/employees" routerLinkActive="active">Employees</a>
+    <a routerLink="/services"  routerLinkActive="active">Services</a>
+</nav>
+<router-outlet></router-outlet>
+
+<app-test2  [parentData]='name'></app-test2>
+
+<app-services></app-services>
+<app-service-detail></app-service-detail>
 
 
-<app-test2 [parentData]='name'></app-test2>

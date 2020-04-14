@@ -1,0 +1,6 @@
+[
+   {"id": 0, "Dienstname": "Putzen", "Mitarbeiter":"Hubert", "Datum" : "10.10.2020"},
+     { "id": 1, "Dienstname": "Rasenmachen","Mitarbeiter":"Hubert", "Datum" :"10.10.2020"},
+     { "id": 2, "Dienstname": "Heckenschneiden","Mitarbeiter":"Franz", "Datum" :"10.10.2020" }
+  
+  ]
