@@ -63,6 +63,7 @@ h1 {
     list-style-type: none;
     padding-left: 0;
     width: 10em;
+    align-items: center;
   }
   .items li {
     cursor: pointer;
@@ -73,6 +74,8 @@ h1 {
     padding: .3em;
     height: 1.6em;
     border-radius: 4px;
+    align-items: center;
+
   }
   .items li:hover {
     color: #607D8B;
@@ -98,6 +101,8 @@ h1 {
     padding: .3em;
     height: 1.6em;
     border-radius: 4px;
+    align-items: center;
+    align-content: center;
   }
 
   .items .badge {

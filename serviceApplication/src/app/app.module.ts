@@ -9,6 +9,8 @@ import { ServicesComponent } from './services/services.component';
 import { ServiceDetailComponent } from './service-detail/service-detail.component';
 import { ServiceService } from './service.service';
 import { HttpClientModule } from '@angular/common/http';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
 
 
 @NgModule({
@@ -19,6 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
     Test2Component,
     ServicesComponent,
     ServiceDetailComponent,
+    PageNotFoundComponent,
+    EmployeeDetailComponent,
     
   ],
   imports: [
