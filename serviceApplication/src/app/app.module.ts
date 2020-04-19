@@ -11,6 +11,11 @@ import { ServiceService } from './service.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TableComponent } from './table/table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 
 @NgModule({
@@ -23,13 +28,18 @@ import { EmployeeDetailComponent } from './employee-detail/employee-detail.compo
     ServiceDetailComponent,
     PageNotFoundComponent,
     EmployeeDetailComponent,
+    TableComponent,
     
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
    
   ],
   providers: [ServiceService],

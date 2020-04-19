@@ -19,12 +19,12 @@ export class ServicesComponent implements OnInit {
   public services = [];
   public errorMsg;
 
-  constructor(private _serviceService: ServiceService) { }
+  constructor(private serviceService: ServiceService) { }
 
   ngOnInit()  {
-   this._serviceService.getServices()
+   this.serviceService.getServices()
    .subscribe(data => this.services = data,
-    error => this.errorMsg == error
+    error => this.errorMsg === error
     );
 
   }
