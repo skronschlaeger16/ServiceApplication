@@ -29,7 +29,6 @@ import { MatSortModule } from '@angular/material/sort';
     PageNotFoundComponent,
     EmployeeDetailComponent,
     TableComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -40,7 +39,6 @@ import { MatSortModule } from '@angular/material/sort';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule
-   
   ],
   providers: [ServiceService],
   bootstrap: [AppComponent]
