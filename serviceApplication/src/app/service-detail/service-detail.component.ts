@@ -3,15 +3,17 @@ import { ServiceService } from '../service.service';
 
 @Component({
   selector: 'app-service-detail',
-  template: `
-  <h2>Service Detail</h2>
-  <h3>{{errorMsg}}</h3>
-  <ul *ngFor="let service of services">
-  <li>{{service.id}} {{service.Dienstname}} {{service.Mitarbeiter}} {{service.Datum}}
-  </li>
+  templateUrl:'./service-detail.component.html'
+  // template: `
+  // // <h2>Service Detail</h2>
+  // // <h3>{{errorMsg}}</h3>
+  // // <ul *ngFor="let service of services">
+  // // <li>{{service.id}} {{service.Dienstname}} {{service.Mitarbeiter}} {{service.Datum}}
+  // // </li>
 
-  </ul>
-  `,
+  // // </ul>
+  // `,
+  ,
   styles: []
 })
 export class ServiceDetailComponent implements OnInit {
@@ -24,7 +26,9 @@ export class ServiceDetailComponent implements OnInit {
   constructor(private _serviceService: ServiceService) { }
 
   ngOnInit()  {
-   this._serviceService.getServices()
+  // this._serviceService.getServices()
+  this._serviceService.findAll()
+
    .subscribe(data => this.services = data,
     error => this.errorMsg = error.message
     );

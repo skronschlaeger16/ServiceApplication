@@ -22,7 +22,8 @@ export class ServicesComponent implements OnInit {
   constructor(private _serviceService: ServiceService) { }
 
   ngOnInit()  {
-   this._serviceService.getServices()
+  // this._serviceService.getServices()
+  this._serviceService.findAll()
    .subscribe(data => this.services = data,
     error => this.errorMsg == error
     );

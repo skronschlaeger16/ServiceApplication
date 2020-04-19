@@ -1,1 +1,24 @@
-<p>service-detail works!</p>
+<div class="card my-5">
+    <div class="card-body">
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">id</th>
+            <th scope="col">name</th>
+            <th scope="col">employeeId</th>
+            <th scope="col">Datum</th>
+
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let service of services">
+            <td>{{ service.id }}</td>
+            <td>{{ service.name }}</td>
+            <td>{{service.employee}}</td>
+            <td>{{service.date}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
