@@ -3,74 +3,45 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable } from '@angular/material/table';
-
-
-
-
-
 import { merge, Observable, of as observableOf } from 'rxjs';
-
-import { UserService } from './user.service';
+import { UserService } from '../user.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/table';
 import { map } from 'rxjs/operators';
 
 
 export interface ServiceClass {
-    id: number;
-    name: string; 
-    employeeId:number;
-     datee : string;
-     longitude: string;
-     latitude: string;
+  id: number;
+  name: string;
+  employeeId: number;
+  datee: string;
+  longitude: string;
+  latitude: string;
 
 }
 
 @Component({
   selector: 'app-table',
   templateUrl: 'table.component.html',
-  styles: [
-    `
-      table {
-        width: 100%;
-      }
-      
-      mat-icon {
-        cursor: pointer;
-      }
-
-      th.mat-sort-header-sorted {
-        color: black;
-      }
-
-      .full-width-table {
-        padding-top: 3em;
-        width: 100%;
-        height: 100%;
-        text-align: left;
-      }
-    
-    `
-  ]
+  styleUrls: ['./table.component.css']
 })
 export class TableComponent extends DataSource<ServiceClass> implements OnInit {
- 
-    
-  displayedColumns: string[] = ['id','Dienstname','Mitarbeiter','Datum'];
+  //, 'Actions'
+  displayedColumns: string[] = ['id', 'Dienstname', 'Mitarbeiter', 'Datum', 'Bearbeiten', 'Loeschen'];
   dataSource;
   service;
 
-  paginator :MatPaginator;
+  paginator: MatPaginator;
   sort: MatSort;
   services: ServiceClass[];
 
-  //@ViewChild(MatPaginator) paginator: MatPaginator;
-  //@ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private userService: UserService,
     public dialog: MatDialog
-  ) {super();}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.userService.getServices()
@@ -81,6 +52,17 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
       });
 
 
+  }
+
+  editUser(service) {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '250px',
+      data: service
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.service = service;
+    });
   }
   connect(): Observable<ServiceClass[]> {
     // Combine everything that affects the rendered data into one update
@@ -100,7 +82,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect() {}
+  disconnect() { }
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
@@ -127,21 +109,36 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
         case 'Dienstname': return compare(a.name, b.name, isAsc);
         case 'Mitarbeiter': return compare(a.employeeId, b.employeeId, isAsc);
         case 'Datum': return compare(a.datee, b.datee, isAsc);
-    
         default: return 0;
       }
     });
   }
 }
 function compare(a: string | number, b: string | number, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog.html',
+})
+export class DialogOverviewExampleDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: ServiceClass) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
-  //addItem() {
+}
+
+  //addItem() 
+  //{
     // this.services.push({
     //   id: 1,
     //   name: "Leanne Graham",
-     
     //   email: "Sincere@april.biz",
     //   address: {
     //     street: "Kulas Light",
@@ -162,7 +159,7 @@ function compare(a: string | number, b: string | number, isAsc: boolean) {
     //   }
     // });
     // this.dataSource = new MatTableDataSource(this.services);
-  //}
+  // }
 
 //   editUser(user) {
 //     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
@@ -178,4 +175,4 @@ function compare(a: string | number, b: string | number, isAsc: boolean) {
 // }
 
 
-// 
+//
