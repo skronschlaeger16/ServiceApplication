@@ -7,8 +7,8 @@
 </mat-paginator>
 
 <mat-form-field class="search">
-  <mat-label></mat-label>
-  <input placeholder="Search">
+  <mat-label>Search:</mat-label>
+  <input matInput placeholder="Search">
 </mat-form-field>
 
   <table mat-table class="full-width-table" matSort aria-label="Elements" >
@@ -48,6 +48,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-
+  
 
 </div>
