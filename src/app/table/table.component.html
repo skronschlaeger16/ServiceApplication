@@ -13,11 +13,9 @@
     <mat-label>Search:</mat-label>
     <input matInput>
   </mat-form-field>
-  
-  <button matButton class="addItemButton"></button>
-
+  <button (click)="ButtonClickAddNewService()" mat-raised-button class="addItemButton" >Hinzufügen</button>  
 <table  mat-table class="full-width-table" mat-table [dataSource]="dataSource"  matSort>
-
+  
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 

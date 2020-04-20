@@ -15,6 +15,10 @@ export class UserService {
     return this.http.get(this.userUrl);
   }
 
+  postService(value){
+    return this.http.post(this.userUrl,value);
+  }
+
 //   setUser(user) {
 //     let userId = user.id;
 //     delete user.id;

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, Input } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,7 +8,7 @@ import { UserService } from '../user.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/table';
 import { map } from 'rxjs/operators';
-
+import { FormControl, Validators } from '@angular/forms';
 
 export interface ServiceClass {
   id: number;
@@ -30,7 +30,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
   displayedColumns: string[] = ['id', 'Dienstname', 'Mitarbeiter', 'Datum', 'Bearbeiten', 'Loeschen'];
   dataSource;
   service;
-
+  
   paginator: MatPaginator;
   sort: MatSort;
   services: ServiceClass[];
@@ -38,7 +38,8 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
 
   constructor(
     private userService: UserService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public dialog_add: MatDialog
   ) {
     super();
   }
@@ -50,9 +51,24 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
         this.dataSource = new MatTableDataSource(services);
         this.dataSource.sort = this.sort;
       });
-
-
   }
+
+  addUserToDB(serv){
+    this.userService.postService(serv);
+  }
+
+  ButtonClickAddNewService(){
+    console.log("Button_add_clicked");
+    let dialogRef = this.dialog_add.open(DialogOverviewAddDialog, {
+        height: '400px',
+        width: '400px',
+    });
+    dialogRef.afterClosed().subscribe(result =>{
+      console.log('Dialog result: ${result}');
+    });
+  };
+
+  
 
   editUser(service) {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
@@ -88,6 +104,8 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
+  
+
   private getPagedData(data: ServiceClass[]) {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     return data.splice(startIndex, this.paginator.pageSize);
@@ -118,6 +136,8 @@ function compare(a: string | number, b: string | number, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
 
+
+
 @Component({
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog.html',
@@ -132,7 +152,28 @@ export class DialogOverviewExampleDialog {
     this.dialogRef.close();
   }
 
+  
 }
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog_add.html',
+})
+export class DialogOverviewAddDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewAddDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: ServiceClass) { }
+    @Input()selected : string;
+    ButtonAddNewService(){ 
+      var inputName = (<HTMLInputElement>document.getElementById("inputName")).value;
+      var inputDate = (<HTMLInputElement>document.getElementById("inputDate")).value;
+      var inputAdress = (<HTMLInputElement>document.getElementById("inputAdress")).value;
+      var inputEmployee = this.selected;
+      console.log(inputName);
+      
+    }
+} 
 
   //addItem() 
   //{
@@ -171,6 +212,8 @@ export class DialogOverviewExampleDialog {
 //       this.user = user;
 //     });
 //   }
+
+    
 
 // }
 

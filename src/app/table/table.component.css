@@ -27,10 +27,10 @@ th.mat-sort-header-sorted {
   }
   .addItemButton
   {
-      position: absolute;
-      
-      left: 2em;
-      background-color: green;
-      width: 30px;
-      height: 30px;
+      position: absolute; 
+      right: 2em;
+      background-color: lightgrey;
   }
+.headFlo{
+  text-align: center;
+}
