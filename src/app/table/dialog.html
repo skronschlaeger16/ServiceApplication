@@ -1,17 +1,37 @@
-<!-- <div mat-dialog-content>
+<div mat-dialog-content>
+  <h2 style="text-align: center;">Service bearbeiten:</h2>
+  <p>
     <mat-form-field>
-      <input matInput [(ngModel)]="data.name" placeholder="Name">
+      <mat-label >Name:</mat-label>
+      <input id="editName" matInput>
     </mat-form-field>
+  </p>
+  <p>
     <mat-form-field>
-      <input matInput [(ngModel)]="data.email" placeholder="Email">
+      <mat-label>Mitarbeiter</mat-label>
+      <mat-select [(value)]="selected">
+        <mat-option value="Lukas Humer">Lukas Humer</mat-option>
+        <mat-option value="Sebastian Kronschlaeger">Sebastian Kronschlaeger</mat-option>
+        <mat-option value="Florian Eggetsberger">Florian Eggetsberger</mat-option>
+      </mat-select>
     </mat-form-field>
+     
+  </p>
+  <p>
     <mat-form-field>
-      <input matInput [(ngModel)]="data.phone" placeholder="Phone">
+      <mat-label>Datum:</mat-label>
+      <input id="editDate" matInput [matDatepicker]="picker">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+  </p>
+  <p>
     <mat-form-field>
-      <input matInput [(ngModel)]="data.website" placeholder="Website">
+      <mat-label>Adresse:</mat-label>
+      <input id="editAddress" matInput>
     </mat-form-field>
-  </div>
-  <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Cancel</button>
-  </div> -->
+  </p>
+  <p>
+    <button (click)="ButtonEditService()" style="background-color: lightgray;" mat-raised-button>Hinzufügen</button>  
+  </p>
+</div>

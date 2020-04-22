@@ -28,7 +28,7 @@ import { MatSelectModule } from '@angular/material/select';
   imports:      [
     MatDialogModule,BrowserModule, FormsModule, HttpClientModule, BrowserAnimationsModule, MatTableModule, MatIconModule,
       MatInputModule ,MatFormFieldModule,MatTableModule, MatInputModule, MatButtonModule, MatListModule, MatButtonToggleModule, MatBadgeModule, MatPaginatorModule,
-      MatNativeDateModule,MatDatepickerModule,MatSelectModule,
+      MatNativeDateModule,MatDatepickerModule,MatSelectModule,MatFormFieldModule
  
  
     ],

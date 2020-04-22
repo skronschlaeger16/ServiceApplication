@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, Input, ReflectiveInjector, Optional } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -9,6 +9,17 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/table';
 import { map } from 'rxjs/operators';
 import { FormControl, Validators } from '@angular/forms';
+import { EventEmitter } from 'protractor';
+import { stringify } from 'querystring';
+import { threadId } from 'worker_threads';
+
+export interface ServiceOutputClass {
+  id: number;
+  name: string;
+  employeeId: number;
+  date: string;
+  address: string;
+}
 
 export interface ServiceClass {
   id: number;
@@ -30,11 +41,14 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
   displayedColumns: string[] = ['id', 'Dienstname', 'Mitarbeiter', 'Datum', 'Bearbeiten', 'Loeschen'];
   dataSource;
   service;
-  
-  paginator: MatPaginator;
+  services2: ServiceOutputClass;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   sort: MatSort;
   services: ServiceClass[];
+  sendValue: string;
 
+   service3: ServiceOutputClass;
 
   constructor(
     private userService: UserService,
@@ -50,25 +64,61 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
         this.services = services;
         this.dataSource = new MatTableDataSource(services);
         this.dataSource.sort = this.sort;
+       // this.dataSource.this.paginator = this.paginator;
+
       });
   }
 
-  addUserToDB(serv){
+  applyFilter(filtervalue: string) {
+    this.dataSource.filter = filtervalue.trim().toLocaleLowerCase();
+  }
+  addUserToDB(serv) {
     this.userService.postService(serv);
   }
 
-  ButtonClickAddNewService(){
+  ButtonClickAddNewService() {
     console.log("Button_add_clicked");
     let dialogRef = this.dialog_add.open(DialogOverviewAddDialog, {
-        height: '400px',
-        width: '400px',
+      height: '400px',
+      width: '400px',
     });
-    dialogRef.afterClosed().subscribe(result =>{
-      console.log('Dialog result: ${result}');
+    let output = "nicht befüllt";
+    dialogRef.afterClosed().subscribe(result => {
+      let instance = dialogRef.componentInstance;
+      console.log(instance.test);
+      this.addService(instance.test);
+      output = instance.test;
     });
+    
   };
 
-  
+
+  addService(input:string){
+    var arr = input.split(';');
+    this.services2 = {id:4,employeeId:1,address:arr[2],date:arr[1],name:arr[0]};
+    var s = this.userService.postService(this.services2);
+    console.log(s);
+
+    setTimeout(()=>{
+      this.userService.getServices()
+      .subscribe((services: ServiceClass[]) => {
+        this.services = services;
+        this.dataSource = new MatTableDataSource(services);
+        this.dataSource.sort = this.sort;
+       // this.dataSource.this.paginator = this.paginator;
+
+      });
+    },0);
+    this.userService.getServices()
+    .subscribe((services: ServiceClass[]) => {
+      this.services = services;
+      this.dataSource = new MatTableDataSource(services);
+      this.dataSource.sort = this.sort;
+     // this.dataSource.this.paginator = this.paginator;
+
+    });
+    
+  }
 
   editUser(service) {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
@@ -104,7 +154,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  
+
 
   private getPagedData(data: ServiceClass[]) {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
@@ -147,33 +197,50 @@ export class DialogOverviewExampleDialog {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     @Inject(MAT_DIALOG_DATA) public data: ServiceClass) { }
-
+  @Input() selected: string;
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  
-}
+  ButtonEditService() {
+    console.log("edit_button");
 
+  }
+}
+//#endregion test
 @Component({
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog_add.html',
 })
 export class DialogOverviewAddDialog {
 
+
   constructor(
+    userService: UserService,
     public dialogRef: MatDialogRef<DialogOverviewAddDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: ServiceClass) { }
-    @Input()selected : string;
-    ButtonAddNewService(){ 
-      var inputName = (<HTMLInputElement>document.getElementById("inputName")).value;
-      var inputDate = (<HTMLInputElement>document.getElementById("inputDate")).value;
-      var inputAdress = (<HTMLInputElement>document.getElementById("inputAdress")).value;
-      var inputEmployee = this.selected;
-      console.log(inputName);
-      
-    }
-} 
+    @Inject(MAT_DIALOG_DATA) public data: ServiceOutputClass) { }
+  @Input() selected: string;
+  test: string;
+  service: ServiceOutputClass;
+  ButtonAddNewService() {
+    var inputName = (<HTMLInputElement>document.getElementById("inputName")).value;
+    var inputDate = (<HTMLInputElement>document.getElementById("inputDate")).value;
+    var inputAdress = (<HTMLInputElement>document.getElementById("inputAdress")).value;
+    var inputEmployee = this.selected;
+    var empId = 1;//this.searchEmployee(inputEmployee);
+    this.test=inputName + ";" + inputDate + ";" + inputAdress + ";" + inputEmployee;
+    this.dialogRef.close();
+    // this.service.name = inputName.toString();
+    // this.service.date = inputDate.toString();
+    // this.service.address = inputAdress;
+    // this.service.employeeId = empId;
+    // //this.userService.postService(data);
+
+  }
+}
+
+
+
 
   //addItem() 
   //{
@@ -213,7 +280,7 @@ export class DialogOverviewAddDialog {
 //     });
 //   }
 
-    
+
 
 // }
 
