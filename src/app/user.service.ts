@@ -13,32 +13,38 @@ export interface ServiceOutputClass {
 @Injectable()
 export class UserService {
     
-  private userUrl: string;
+  private serviceUrl: string;
+  private employeeUrl:string;
   serviceOutput: ServiceOutputClass;
   constructor(private http: HttpClient) {
-    this.userUrl = 'http://localhost:8080/services';
+    this.serviceUrl = 'http://localhost:8080/services';
+    this.employeeUrl = 'http://localhost:8080/employees'
 
   }
 
   getServices() {
-    return this.http.get(this.userUrl);
+    return this.http.get(this.serviceUrl);
   }
 
   deleteService(id: number){
     
-    return this.http.delete(this.userUrl+'/'+ id);//.subscribe(data => console.log(data));
+    return this.http.delete(this.serviceUrl+'/'+ id).subscribe(data => console.log(data));
     //return this.http.delete(this.userUrl,value).subscribe(data => console.log(data));
   } 
 
   putService(value: ServiceOutputClass){
     console.log(value);
     var id = value.id;
-    return this.http.put(this.userUrl + "/"+id,value);
+    return this.http.put(this.serviceUrl + "/"+id,value).subscribe(data=>console.log(data));
   }
 
   postService(value: ServiceOutputClass){
     console.log(value);
-    return this.http.post(this.userUrl,value).subscribe(data=>console.log(data));
+    return this.http.post(this.serviceUrl,value).subscribe(data=>console.log(data));
+  }
+
+  getEmployees(){
+    return this.http.get(this.employeeUrl);
   }
 
 //   setUser(user) {
