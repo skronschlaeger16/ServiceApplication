@@ -10,10 +10,9 @@
     <mat-form-field>
       <mat-label>Mitarbeiter</mat-label>
       <mat-select [(value)]="selected">
-        <mat-option value="Lukas Humer">Lukas Humer</mat-option>
-        <mat-option value="Sebastian Kronschlaeger">Sebastian Kronschlaeger</mat-option>
-        <mat-option value="Florian Eggetsberger">Florian Eggetsberger</mat-option>
-      </mat-select>
+        <mat-option *ngFor="let p of stringEmps" [value]="p">
+          {{p}}
+        </mat-option>   </mat-select>
     </mat-form-field>
      
   </p>
