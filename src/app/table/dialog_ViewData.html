@@ -1,0 +1,34 @@
+<div mat-dialog-content>
+    <h2 style="text-align: center;">Service hinzufügen:</h2>
+    <p>
+      <mat-form-field>
+        <mat-label >Name:</mat-label>
+        <input id="inputName" matInput>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field>
+        <mat-label>Mitarbeiter</mat-label>
+        <mat-select [(value)]="selected">
+          <mat-option value="Lukas Humer">Lukas Humer</mat-option>
+          <mat-option value="Sebastian Kronschlaeger">Sebastian Kronschlaeger</mat-option>
+          <mat-option value="Florian Eggetsberger">Florian Eggetsberger</mat-option>
+        </mat-select>
+      </mat-form-field>
+       
+    </p>
+    <p>
+      <mat-form-field>
+        <mat-label>Datum:</mat-label>
+        <input id="inputDate" matInput [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field>
+        <mat-label>Adresse:</mat-label>
+        <input id="inputAdress" matInput>
+      </mat-form-field>
+    </p>
+  </div>
