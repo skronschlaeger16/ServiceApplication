@@ -24,9 +24,20 @@ export class UserService {
     return this.http.get(this.userUrl);
   }
 
+  deleteService(id: number){
+    
+    return this.http.delete(this.userUrl+'/'+ id);//.subscribe(data => console.log(data));
+    //return this.http.delete(this.userUrl,value).subscribe(data => console.log(data));
+  } 
+
+  putService(value: ServiceOutputClass){
+    console.log(value);
+    var id = value.id;
+    return this.http.put(this.userUrl + "/"+id,value);
+  }
+
   postService(value: ServiceOutputClass){
     console.log(value);
-    this.serviceOutput = {id:4,employeeId:2,address:"Peuerbach",date:"10.10.2020",name:"Service5"};
     return this.http.post(this.userUrl,value).subscribe(data=>console.log(data));
   }
 
