@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, Input, ReflectiveInjector, Optional } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, Input, ReflectiveInjector, Optional, AfterViewInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -7,11 +7,12 @@ import { merge, Observable, of as observableOf } from 'rxjs';
 import { UserService } from '../user.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { DataSource } from '@angular/cdk/table';
-import { map } from 'rxjs/operators';
+import { map, first } from 'rxjs/operators';
 import { FormControl, Validators } from '@angular/forms';
-import { EventEmitter } from 'protractor';
+import { EventEmitter, element } from 'protractor';
 import { stringify } from 'querystring';
 import { threadId } from 'worker_threads';
+import { ITS_JUST_ANGULAR } from '@angular/core/src/r3_symbols';
 
 export interface ServiceOutputClass {
   id: number;
@@ -28,7 +29,13 @@ export interface ServiceClass {
   datee: string;
   longitude: string;
   latitude: string;
+}
 
+export interface Employee {
+  id: number;
+  latitude: number;
+  longitude: number;
+  name: string;
 }
 
 @Component({
@@ -36,19 +43,21 @@ export interface ServiceClass {
   templateUrl: 'table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent extends DataSource<ServiceClass> implements OnInit {
+export class TableComponent extends DataSource<ServiceClass> implements OnInit, AfterViewInit  {
   //, 'Actions'
-  displayedColumns: string[] = ['id', 'Dienstname', 'Mitarbeiter', 'Datum', 'Bearbeiten', 'Loeschen'];
+  displayedColumns: string[] = ['id', 'Dienstname', 'Mitarbeiter', 'Datum', 'Bearbeiten', 'Loeschen', 'Anzeigen'];
   dataSource;
   service;
   services2: ServiceOutputClass;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  sort: MatSort;
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
   services: ServiceClass[];
+  employees: Employee[];
+  stringEmps: string[];
   sendValue: string;
-
-   service3: ServiceOutputClass;
+  temp:number;
+  service3: ServiceOutputClass;
 
   constructor(
     private userService: UserService,
@@ -57,16 +66,34 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
   ) {
     super();
   }
+  ngAfterViewInit(): void {
+    setTimeout(()=>this.dataSource.sort = this.sort);
+    console.log(this.employees);
+    setTimeout(()=>this.fillEmps());
+    
 
+  }
+
+  
   ngOnInit() {
     this.userService.getServices()
       .subscribe((services: ServiceClass[]) => {
         this.services = services;
         this.dataSource = new MatTableDataSource(services);
-        this.dataSource.sort = this.sort;
-       // this.dataSource.this.paginator = this.paginator;
-
+      
+        setTimeout(()=>this.dataSource.sort = this.sort);
+        setTimeout(() => this.dataSource.paginator = this.paginator);
+            });
+    this.userService.getEmployees()
+      .subscribe((employees: Employee[]) => {
+        this.employees = employees;
       });
+      
+      //setTimeout(()=>this.fillEmps());
+  }
+
+  fillEmps(){
+    this.stringEmps=this.employees.map(d => d.name);
   }
 
   applyFilter(filtervalue: string) {
@@ -76,60 +103,121 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
     this.userService.postService(serv);
   }
 
+  ButtonClickDeleteService(id) {
+    console.log(id);
+    var x = confirm('Willst du wirklich löschen?');
+    if (x == true) {
+
+      this.userService.deleteService(id);//.subscribe(res => {
+      this.refresh();
+
+    }
+    else {
+      console.log('You pressed Cancel')
+
+    }
+
+    // this.dataSource.this.paginator = this.paginator;
+
+
+
+
+  }
+  //#region editService
+  ButtonClickEditService(service) {
+    console.log("Button_edit_clicked");
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '400px',
+      height: '425px',
+    });
+    dialogRef.componentInstance.employees = this.employees;
+    dialogRef.componentInstance.stringEmps = this.stringEmps;
+    dialogRef.componentInstance.service = service;
+    var id = service.id-1;
+    console.log(service.employee.name);
+
+    dialogRef.componentInstance.showThings(service);
+    //console.log(this.employees[this.services[id].name]);
+    (<HTMLInputElement>document.getElementById("editName")).value = service.name;
+    (<HTMLInputElement>document.getElementById("editDate")).value = service.date;
+    (<HTMLInputElement>document.getElementById("editAddress")).value = service.employee.address;
+    (<HTMLInputElement>document.getElementById("employee_select")).setAttribute("selected",service.employee.name);
+
+    dialogRef.componentInstance.serviceId = id;
+    console.log(id);
+
+    console.log(service.id );
+    dialogRef.componentInstance.services = this.services;
+    dialogRef.afterClosed().subscribe(result => {
+      let instance = dialogRef.componentInstance;
+      this.editService(instance.output,service);
+    });
+    this.refresh();
+    this.refresh();
+
+  }
+  editService(input: string,service:ServiceClass) {
+    var arr = input.split(';');
+    var x = this.employees.filter(d => d.name === arr[3]).find(first);
+    this.services2 = { id: service.id, employeeId: x.id, address: arr[2], date: arr[1], name: arr[0] };
+    console.log(this.services2);
+    
+    var s = this.userService.putService(this.services2);
+    console.log(s);
+
+    this.refresh();
+    this.refresh();
+  }
+  //#endregion
+  ButtonClickViewData(service) {
+    console.log("Button_clicked_view_data");
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '400px',
+      height: '425px',
+    });
+  }
+
+
+
+
+  //#region addService
   ButtonClickAddNewService() {
     console.log("Button_add_clicked");
     let dialogRef = this.dialog_add.open(DialogOverviewAddDialog, {
       height: '400px',
-      width: '400px',
+      width: '425px',
     });
-    let output = "nicht befüllt";
+    dialogRef.componentInstance.employees = this.employees;
+    dialogRef.componentInstance.stringEmps = this.stringEmps;
+
     dialogRef.afterClosed().subscribe(result => {
       let instance = dialogRef.componentInstance;
       console.log(instance.test);
-      this.addService(instance.test);
-      output = instance.test;
+      setTimeout(()=>this.setTemp);
+      this.addService(instance.test,this.temp);
     });
-    
+
+    this.refresh();
+    this.refresh();
   };
 
+  setTemp(){
+      this.temp = this.services[this.services.length-1].id;
+  }
 
-  addService(input:string){
+  addService(input: string,f:number) {
     var arr = input.split(';');
-    this.services2 = {id:4,employeeId:1,address:arr[2],date:arr[1],name:arr[0]};
+    var x = this.employees.filter(d => d.name === arr[3]).find(first);
+    this.services2 = { id: f+1, employeeId: x.id, address: arr[2], date: arr[1], name: arr[0] };
     var s = this.userService.postService(this.services2);
     console.log(s);
 
-    setTimeout(()=>{
-      this.userService.getServices()
-      .subscribe((services: ServiceClass[]) => {
-        this.services = services;
-        this.dataSource = new MatTableDataSource(services);
-        this.dataSource.sort = this.sort;
-       // this.dataSource.this.paginator = this.paginator;
+    this.refresh();
+    this.refresh();
 
-      });
-    },0);
-    this.userService.getServices()
-    .subscribe((services: ServiceClass[]) => {
-      this.services = services;
-      this.dataSource = new MatTableDataSource(services);
-      this.dataSource.sort = this.sort;
-     // this.dataSource.this.paginator = this.paginator;
-
-    });
-    
   }
+  //#endregion
 
-  editUser(service) {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '250px',
-      data: service
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.service = service;
-    });
-  }
   connect(): Observable<ServiceClass[]> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
@@ -140,9 +228,90 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
     ];
 
     return merge(...dataMutations).pipe(map(() => {
-      return this.getPagedData(this.getSortedData([...this.services]));
+      return this.getPagedData(this.sortData([...this.services]));
     }));
   }
+
+  /* #region(collapsed) Refresh */
+  refresh() {
+    setTimeout(() => {
+      this.userService.getServices()
+        .subscribe((services: ServiceClass[]) => {
+          this.services = services;
+          this.dataSource = new MatTableDataSource(services);
+       
+          this.dataSource.sort = this.sort;
+         
+          setTimeout(() => this.dataSource.paginator = this.paginator);
+
+        });
+    }, 0);
+    this.userService.getServices()
+      .subscribe((services: ServiceClass[]) => {
+        this.services = services;
+        this.dataSource = new MatTableDataSource(services);
+        this.dataSource.sort = this.sort;
+        setTimeout(() => this.dataSource.paginator = this.paginator);
+
+      }); setTimeout(() => {
+        this.userService.getServices()
+          .subscribe((services: ServiceClass[]) => {
+            this.services = services;
+            this.dataSource = new MatTableDataSource(services);
+            this.dataSource.sort = this.sort;
+            // this.dataSource.this.paginator = this.paginator;
+            setTimeout(() => this.dataSource.paginator = this.paginator);
+
+          });
+      }, 0);
+    this.userService.getServices()
+      .subscribe((services: ServiceClass[]) => {
+        this.services = services;
+        this.dataSource = new MatTableDataSource(services);
+        this.dataSource.sort = this.sort;
+        setTimeout(() => this.dataSource.paginator = this.paginator);
+
+        // this.dataSource.this.paginator = this.paginator;
+
+      });
+    setTimeout(() => {
+      this.userService.getServices()
+        .subscribe((services: ServiceClass[]) => {
+          this.services = services;
+          this.dataSource = new MatTableDataSource(services);
+          this.dataSource.sort = this.sort;
+          // this.dataSource.this.paginator = this.paginator;
+
+        });
+    }, 0);
+    this.userService.getServices()
+      .subscribe((services: ServiceClass[]) => {
+        this.services = services;
+        this.dataSource = new MatTableDataSource(services);
+        this.dataSource.sort = this.sort;
+        // this.dataSource.this.paginator = this.paginator;
+
+      });
+    setTimeout(() => {
+      this.userService.getServices()
+        .subscribe((services: ServiceClass[]) => {
+          this.services = services;
+          this.dataSource = new MatTableDataSource(services);
+          this.dataSource.sort = this.sort;
+          // this.dataSource.this.paginator = this.paginator;
+
+        });
+    }, 0);
+    this.userService.getServices()
+      .subscribe((services: ServiceClass[]) => {
+        this.services = services;
+        this.dataSource = new MatTableDataSource(services);
+        this.dataSource.sort = this.sort;
+        // this.dataSource.this.paginator = this.paginator;
+
+      });
+  }
+  /* #endregion */
 
   /**
    *  Called when the table is being destroyed. Use this function, to clean up
@@ -165,7 +334,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: ServiceClass[]) {
+  private sortData(data: ServiceClass[]) {
     if (!this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -187,7 +356,7 @@ function compare(a: string | number, b: string | number, isAsc: boolean) {
 }
 
 
-
+/* #region(collapsed) Dialogs */
 @Component({
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog.html',
@@ -198,13 +367,27 @@ export class DialogOverviewExampleDialog {
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     @Inject(MAT_DIALOG_DATA) public data: ServiceClass) { }
   @Input() selected: string;
-  onNoClick(): void {
+  employees: Employee[];
+  output: string;
+  serviceId: number;
+  services: ServiceClass[];
+  service: ServiceClass;
+  stringEmps: string[];
+  ButtonEditService() {
+
+    var inputName = (<HTMLInputElement>document.getElementById("editName")).value;
+    var inputDate = (<HTMLInputElement>document.getElementById("editDate")).value;
+    var inputAdress = (<HTMLInputElement>document.getElementById("editAddress")).value;
+    var emp = this.selected;
+    this.output = inputName + ";" + inputDate + ";" + inputAdress + ";" + emp;
     this.dialogRef.close();
   }
+  
 
-  ButtonEditService() {
-    console.log("edit_button");
-
+  showThings(service){
+    console.log(service.employee.name);
+    
+    this.selected = service.employee.name;
   }
 }
 //#endregion test
@@ -221,68 +404,17 @@ export class DialogOverviewAddDialog {
     @Inject(MAT_DIALOG_DATA) public data: ServiceOutputClass) { }
   @Input() selected: string;
   test: string;
+  employees: Employee[];
   service: ServiceOutputClass;
+  stringEmps: string[];
   ButtonAddNewService() {
     var inputName = (<HTMLInputElement>document.getElementById("inputName")).value;
     var inputDate = (<HTMLInputElement>document.getElementById("inputDate")).value;
     var inputAdress = (<HTMLInputElement>document.getElementById("inputAdress")).value;
-    var inputEmployee = this.selected;
+    var emp = this.selected;
     var empId = 1;//this.searchEmployee(inputEmployee);
-    this.test=inputName + ";" + inputDate + ";" + inputAdress + ";" + inputEmployee;
+    this.test = inputName + ";" + inputDate + ";" + inputAdress + ";" + emp;
     this.dialogRef.close();
-    // this.service.name = inputName.toString();
-    // this.service.date = inputDate.toString();
-    // this.service.address = inputAdress;
-    // this.service.employeeId = empId;
-    // //this.userService.postService(data);
-
   }
 }
-
-
-
-
-  //addItem() 
-  //{
-    // this.services.push({
-    //   id: 1,
-    //   name: "Leanne Graham",
-    //   email: "Sincere@april.biz",
-    //   address: {
-    //     street: "Kulas Light",
-    //     suite: "Apt. 556",
-    //     city: "Gwenborough",
-    //     zipcode: "92998-3874",
-    //     geo: {
-    //       lat: "-37.3159",
-    //       lng: "81.1496"
-    //     }
-    //   },
-    //   phone: "1-770-736-8031 x56442",
-    //   website: "hildegard.org",
-    //   company: {
-    //     name: "Romaguera-Crona",
-    //     catchPhrase: "Multi-layered client-server neural-net",
-    //     bs: "harness real-time e-markets"
-    //   }
-    // });
-    // this.dataSource = new MatTableDataSource(this.services);
-  // }
-
-//   editUser(user) {
-//     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-//       width: '250px',
-//       data: user
-//     });
-
-//     dialogRef.afterClosed().subscribe(result => {
-//       this.user = user;
-//     });
-//   }
-
-
-
-// }
-
-
-//
+/* #endregion */

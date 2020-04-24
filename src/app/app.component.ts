@@ -23,10 +23,9 @@ export class AppComponent  {
     // this.userService.getImages()
     //   .subscribe(images => this.images = images);
   }
-
   showInfo(service) {
     this.selectedUser = service;
-    console.log(this.selectedUser);
+    console.log(this.selectedUser.employee);
   }
 
 }

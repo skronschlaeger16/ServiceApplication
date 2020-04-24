@@ -24,12 +24,14 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 
 
+import {MatSortModule} from '@angular/material/sort'; 
+
+
 @NgModule({
   imports:      [
     MatDialogModule,BrowserModule, FormsModule, HttpClientModule, BrowserAnimationsModule, MatTableModule, MatIconModule,
       MatInputModule ,MatFormFieldModule,MatTableModule, MatInputModule, MatButtonModule, MatListModule, MatButtonToggleModule, MatBadgeModule, MatPaginatorModule,
-      MatNativeDateModule,MatDatepickerModule,MatSelectModule,MatFormFieldModule
- 
+      MatNativeDateModule,MatDatepickerModule,MatSelectModule,MatFormFieldModule,MatSortModule
  
     ],
   declarations: [ AppComponent, HelloComponent, TableComponent, DialogOverviewAddDialog,DialogOverviewExampleDialog ],
