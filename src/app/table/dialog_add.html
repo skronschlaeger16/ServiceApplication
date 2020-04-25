@@ -31,9 +31,13 @@
     </mat-form-field>
   </p>
   <p>
-    <button (click)="ButtonAddNewService()" style="background-color: lightgray;" mat-raised-button>Hinzufügen</button>  
-    <button (click)="CancelDialog()" style="position: absolute; 
-    right: 5em;
+    <button class="btn" (click)="ButtonAddNewService()" style="margin-right: 10px;background-color: lightgray;" mat-raised-button>Hinzufügen</button>  
+    <button class="btn" (click)="CancelDialog()" style="
     background-color: lightgrey;" mat-raised-button>Zurück</button>
   </p>
 </div>
+<style>
+  .btn{
+    display: inline-block;
+  }
+</style>
