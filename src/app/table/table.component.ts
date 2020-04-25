@@ -75,9 +75,8 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     super();
   }
   ngAfterViewInit(): void {
-    setTimeout(() => this.dataSource.sort = this.sort);
-    console.log(this.employees);
-    setTimeout(() => this.fillEmps());
+    setTimeout(() => this.dataSource.sort = this.sort,1000);
+    setTimeout(() => this.fillEmps(),1000);
     // this.dataSource.sortingDataAccessor = ((data:any, sortHeaderId:string)=>{
     //   let toReturn: any;
     //   if(sortHeaderId === 'id')
@@ -201,7 +200,9 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 
     var s = this.userService.putService(this.services2);
     console.log(s);
-    window.location.reload();
+
+
+    this.refresh();
     this.refresh();
     this.refresh();
     }
@@ -209,6 +210,8 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
       console.log("edit was canceled");
       
     }
+    window.location.reload();
+
   }
   //#endregion
   ButtonClickViewData(service) {
