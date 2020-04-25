@@ -25,14 +25,23 @@
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-  </p>
+  </p> 
   <p>
     <mat-form-field>
       <mat-label>Adresse:</mat-label>
       <input id="editAddress" matInput>
     </mat-form-field>
   </p>
-  <p>
-    <button (click)="ButtonEditService()" style="background-color: lightgray;" mat-raised-button>Änder</button>  
-  </p>
+  <div>
+    <button class="btn" (click)="ButtonEditService()" style="background-color: lightgray;" mat-raised-button>Ändern</button>  
+    <button class="btn" (click)="CancelDialog()" style="background-color: lightgrey;" mat-raised-button>Zurück</button>
+  
+  </div>
 </div>
+<style>
+  .btn{
+    display: inline-block;
+    top: 50%;
+  left: 50%;
+  }
+</style>
