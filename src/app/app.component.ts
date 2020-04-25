@@ -9,7 +9,7 @@ import { UserService } from './user.service';
 })
 export class AppComponent  {
   name = 'Angular';
-  services;
+  services; 
   images;
 
   selectedUser;

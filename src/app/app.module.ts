@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatBadgeModule } from '@angular/material/badge';
-import { TableComponent, DialogOverviewExampleDialog, DialogOverviewAddDialog } from './table/table.component';
+import { TableComponent, DialogOverviewExampleDialog, DialogOverviewAddDialog, DialogOverviewViewDialog } from './table/table.component';
 import { AppComponent } from './app.component';
 import { HelloComponent } from './hello.component';
 import { UserService } from './user.service';
@@ -32,12 +32,12 @@ import {MatSortModule} from '@angular/material/sort';
     MatDialogModule,BrowserModule, FormsModule, HttpClientModule, BrowserAnimationsModule, MatTableModule, MatIconModule,
       MatInputModule ,MatFormFieldModule,MatTableModule, MatInputModule, MatButtonModule, MatListModule, MatButtonToggleModule, MatBadgeModule, MatPaginatorModule,
       MatNativeDateModule,MatDatepickerModule,MatSelectModule,MatFormFieldModule,MatSortModule
- 
+      
     ],
-  declarations: [ AppComponent, HelloComponent, TableComponent, DialogOverviewAddDialog,DialogOverviewExampleDialog ],
+  declarations: [ AppComponent, HelloComponent, TableComponent, DialogOverviewAddDialog,DialogOverviewExampleDialog,DialogOverviewViewDialog],
   providers: [UserService],
-  bootstrap:    [ AppComponent],
+  bootstrap:    [ AppComponent], 
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [DialogOverviewAddDialog,DialogOverviewExampleDialog]
+  entryComponents: [DialogOverviewAddDialog,DialogOverviewExampleDialog,DialogOverviewViewDialog]
 })
 export class AppModule { }
