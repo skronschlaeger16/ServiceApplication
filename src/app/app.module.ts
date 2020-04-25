@@ -22,17 +22,21 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import {AgmCoreModule} from '@agm/core'
 
 
 import {MatSortModule} from '@angular/material/sort'; 
+import { GoogleMapsModule } from '@angular/google-maps';
 
 
 @NgModule({
   imports:      [
     MatDialogModule,BrowserModule, FormsModule, HttpClientModule, BrowserAnimationsModule, MatTableModule, MatIconModule,
       MatInputModule ,MatFormFieldModule,MatTableModule, MatInputModule, MatButtonModule, MatListModule, MatButtonToggleModule, MatBadgeModule, MatPaginatorModule,
-      MatNativeDateModule,MatDatepickerModule,MatSelectModule,MatFormFieldModule,MatSortModule
-      
+      MatNativeDateModule,MatDatepickerModule,MatSelectModule,MatFormFieldModule,MatSortModule,
+      AgmCoreModule.forRoot({
+        apiKey: 'AIzaSyDevYWt10ZqUp4ZAL_4LGnablUniR9Y9cQ'
+      }),
     ],
   declarations: [ AppComponent, HelloComponent, TableComponent, DialogOverviewAddDialog,DialogOverviewExampleDialog,DialogOverviewViewDialog],
   providers: [UserService],
