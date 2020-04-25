@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, Input, ReflectiveInjector, Optional, AfterViewInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, Input, ReflectiveInjector, Optional, AfterViewInit , ElementRef} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -13,6 +13,8 @@ import { EventEmitter, element } from 'protractor';
 import { stringify } from 'querystring';
 import { threadId } from 'worker_threads';
 import { ITS_JUST_ANGULAR } from '@angular/core/src/r3_symbols';
+import { AppComponent } from '../app.component';
+import { access } from 'fs';
 
 export interface ServiceOutputClass {
   id: number;
@@ -37,6 +39,7 @@ export interface Employee {
   longitude: number;
   name: string;
 }
+declare var google: any;
 
 @Component({
   selector: 'app-table',
@@ -49,6 +52,10 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   dataSource;
   service;
   services2: ServiceOutputClass;
+  map: Object;
+  marker: Object;
+  location:Object;
+  @ViewChild('map') mapRef: ElementRef;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -62,7 +69,8 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   constructor(
     private userService: UserService,
     public dialog: MatDialog,
-    public dialog_add: MatDialog
+    public dialog_add: MatDialog,
+    private appcom:AppComponent
   ) {
     super();
   }
@@ -82,6 +90,25 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 
 
   }
+  // updateMap()
+  // {
+  //   this.userService.getServices()
+  //   .subscribe((services: ServiceClass[]) => {
+  //     this.services = services;
+  //     this.dataSource = new MatTableDataSource(services);
+
+  //     setTimeout(() => this.dataSource.sort = this.sort);
+  //     setTimeout(() => this.dataSource.paginator = this.paginator);
+  //   });
+
+  //   this.services.forEach(element => {
+  //     this.map = new google.maps.Map(this.mapRef.nativeElement,{
+  //       center: {lat: element.longitude, long: element.latitude}
+
+  //     }) 
+  //   });
+  
+  // }
 
 
   ngOnInit() {
@@ -116,9 +143,9 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     console.log(id);
     var x = confirm('Willst du wirklich löschen?');
     if (x == true) {
-
       this.userService.deleteService(id);//.subscribe(res => {
       this.refresh();
+      window.location.reload();
 
     }
     else {
@@ -136,7 +163,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   ButtonClickEditService(service) {
     console.log("Button_edit_clicked");
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '400px',
+      width: '300px',
       height: '425px',
     });
     dialogRef.componentInstance.employees = this.employees;
@@ -174,7 +201,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 
     var s = this.userService.putService(this.services2);
     console.log(s);
-
+    window.location.reload();
     this.refresh();
     this.refresh();
     }
@@ -187,7 +214,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   ButtonClickViewData(service) {
     console.log("Button_clicked_view_data");
     const dialogRef = this.dialog.open(DialogOverviewViewDialog, {
-      width: '400px',
+      width: '300px',
       height: '515px',
     });
     (<HTMLInputElement>document.getElementById("viewName")).value = service.name;
@@ -207,8 +234,9 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   ButtonClickAddNewService() {
     console.log("Button_add_clicked");
     let dialogRef = this.dialog_add.open(DialogOverviewAddDialog, {
-      height: '400px',
-      width: '425px',
+      width: '300px',
+      height: '425px'
+      
     });
     dialogRef.componentInstance.employees = this.employees;
     dialogRef.componentInstance.stringEmps = this.stringEmps;
@@ -218,10 +246,12 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
       console.log(instance.test);
       setTimeout(() => this.setTemp);
       this.addService(instance.test, this.temp);
+      
     });
 
     this.refresh();
     this.refresh();
+    
   };
 
   setTemp() {
@@ -237,7 +267,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     this.services2 = { id: f + 1, employeeId: x.id, address: arr[2], date: arr[1], name: arr[0] };
     var s = this.userService.postService(this.services2);
     console.log(s);
-
+    window.location.reload();
     this.refresh();
     this.refresh();
     }
@@ -431,8 +461,6 @@ export class DialogOverviewExampleDialog {
   templateUrl: 'dialog_add.html',
 })
 export class DialogOverviewAddDialog {
-
-
   constructor(
     userService: UserService,
     public dialogRef: MatDialogRef<DialogOverviewAddDialog>,
@@ -447,7 +475,6 @@ export class DialogOverviewAddDialog {
     var inputDate = (<HTMLInputElement>document.getElementById("inputDate")).value;
     var inputAdress = (<HTMLInputElement>document.getElementById("inputAdress")).value;
     var emp = this.selected;
-    var empId = 1;//this.searchEmployee(inputEmployee);
     this.test = inputName + ";" + inputDate + ";" + inputAdress + ";" + emp;
     this.dialogRef.close();
   }

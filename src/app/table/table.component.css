@@ -30,6 +30,7 @@ th.mat-sort-header-sorted {
       position: absolute; 
       right: 2em;
       background-color: lightgrey;
+      margin-top: 0.5em;
   }
 .headFlo{
   text-align: center;
