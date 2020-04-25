@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, ViewChild, Input, ReflectiveInjector, Optional, AfterViewInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable } from '@angular/material/table';
 import { merge, Observable, of as observableOf } from 'rxjs';
@@ -43,7 +43,7 @@ export interface Employee {
   templateUrl: 'table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent extends DataSource<ServiceClass> implements OnInit, AfterViewInit  {
+export class TableComponent extends DataSource<ServiceClass> implements OnInit, AfterViewInit {
   //, 'Actions'
   displayedColumns: string[] = ['id', 'Dienstname', 'Mitarbeiter', 'Datum', 'Bearbeiten', 'Loeschen', 'Anzeigen'];
   dataSource;
@@ -51,12 +51,12 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   services2: ServiceOutputClass;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   services: ServiceClass[];
   employees: Employee[];
   stringEmps: string[];
   sendValue: string;
-  temp:number;
+  temp: number;
   service3: ServiceOutputClass;
 
   constructor(
@@ -67,33 +67,42 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     super();
   }
   ngAfterViewInit(): void {
-    setTimeout(()=>this.dataSource.sort = this.sort);
+    setTimeout(() => this.dataSource.sort = this.sort);
     console.log(this.employees);
-    setTimeout(()=>this.fillEmps());
-    
+    setTimeout(() => this.fillEmps());
+    // this.dataSource.sortingDataAccessor = ((data:any, sortHeaderId:string)=>{
+    //   let toReturn: any;
+    //   if(sortHeaderId === 'id')
+    //   toReturn = data[sortHeaderId];
+
+    // });
+
+
+
+
 
   }
 
-  
+
   ngOnInit() {
     this.userService.getServices()
       .subscribe((services: ServiceClass[]) => {
         this.services = services;
         this.dataSource = new MatTableDataSource(services);
-      
-        setTimeout(()=>this.dataSource.sort = this.sort);
+
+        setTimeout(() => this.dataSource.sort = this.sort);
         setTimeout(() => this.dataSource.paginator = this.paginator);
-            });
+      });
     this.userService.getEmployees()
       .subscribe((employees: Employee[]) => {
         this.employees = employees;
       });
-      
-      //setTimeout(()=>this.fillEmps());
+
+    //setTimeout(()=>this.fillEmps());
   }
 
-  fillEmps(){
-    this.stringEmps=this.employees.map(d => d.name);
+  fillEmps() {
+    this.stringEmps = this.employees.map(d => d.name);
   }
 
   applyFilter(filtervalue: string) {
@@ -133,7 +142,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     dialogRef.componentInstance.employees = this.employees;
     dialogRef.componentInstance.stringEmps = this.stringEmps;
     dialogRef.componentInstance.service = service;
-    var id = service.id-1;
+    var id = service.id - 1;
     console.log(service.employee.name);
 
     dialogRef.componentInstance.showThings(service);
@@ -141,39 +150,53 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     (<HTMLInputElement>document.getElementById("editName")).value = service.name;
     (<HTMLInputElement>document.getElementById("editDate")).value = service.date;
     (<HTMLInputElement>document.getElementById("editAddress")).value = service.employee.address;
-    (<HTMLInputElement>document.getElementById("employee_select")).setAttribute("selected",service.employee.name);
+    (<HTMLInputElement>document.getElementById("employee_select")).setAttribute("selected", service.employee.name);
 
     dialogRef.componentInstance.serviceId = id;
     console.log(id);
 
-    console.log(service.id );
+    console.log(service.id);
     dialogRef.componentInstance.services = this.services;
     dialogRef.afterClosed().subscribe(result => {
       let instance = dialogRef.componentInstance;
-      this.editService(instance.output,service);
+      this.editService(instance.output, service);
     });
     this.refresh();
     this.refresh();
 
   }
-  editService(input: string,service:ServiceClass) {
+  editService(input: string, service: ServiceClass) {
+    if(typeof input !="undefined"){
     var arr = input.split(';');
     var x = this.employees.filter(d => d.name === arr[3]).find(first);
     this.services2 = { id: service.id, employeeId: x.id, address: arr[2], date: arr[1], name: arr[0] };
     console.log(this.services2);
-    
+
     var s = this.userService.putService(this.services2);
     console.log(s);
 
     this.refresh();
     this.refresh();
+    }
+    else{
+      console.log("edit was canceled");
+      
+    }
   }
   //#endregion
   ButtonClickViewData(service) {
     console.log("Button_clicked_view_data");
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+    const dialogRef = this.dialog.open(DialogOverviewViewDialog, {
       width: '400px',
-      height: '425px',
+      height: '515px',
+    });
+    (<HTMLInputElement>document.getElementById("viewName")).value = service.name;
+    (<HTMLInputElement>document.getElementById("viewEmployee")).value = service.employee.name;
+    (<HTMLInputElement>document.getElementById("viewDate")).value = service.date;
+    (<HTMLInputElement>document.getElementById("viewAddress")).value = service.address;
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(closed);
+        
     });
   }
 
@@ -193,28 +216,35 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     dialogRef.afterClosed().subscribe(result => {
       let instance = dialogRef.componentInstance;
       console.log(instance.test);
-      setTimeout(()=>this.setTemp);
-      this.addService(instance.test,this.temp);
+      setTimeout(() => this.setTemp);
+      this.addService(instance.test, this.temp);
     });
 
     this.refresh();
     this.refresh();
   };
 
-  setTemp(){
-      this.temp = this.services[this.services.length-1].id;
+  setTemp() {
+    this.temp = this.services[this.services.length - 1].id;
   }
 
-  addService(input: string,f:number) {
+  addService(input: string, f: number) {
+    if(typeof input !="undefined"){
+
+    
     var arr = input.split(';');
     var x = this.employees.filter(d => d.name === arr[3]).find(first);
-    this.services2 = { id: f+1, employeeId: x.id, address: arr[2], date: arr[1], name: arr[0] };
+    this.services2 = { id: f + 1, employeeId: x.id, address: arr[2], date: arr[1], name: arr[0] };
     var s = this.userService.postService(this.services2);
     console.log(s);
 
     this.refresh();
     this.refresh();
-
+    }
+    else{
+      console.log("add was canceled");
+      
+    }
   }
   //#endregion
 
@@ -239,9 +269,9 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
         .subscribe((services: ServiceClass[]) => {
           this.services = services;
           this.dataSource = new MatTableDataSource(services);
-       
+
           this.dataSource.sort = this.sort;
-         
+
           setTimeout(() => this.dataSource.paginator = this.paginator);
 
         });
@@ -270,6 +300,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
         this.dataSource = new MatTableDataSource(services);
         this.dataSource.sort = this.sort;
         setTimeout(() => this.dataSource.paginator = this.paginator);
+
 
         // this.dataSource.this.paginator = this.paginator;
 
@@ -340,12 +371,13 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     }
 
     return data.sort((a, b) => {
-      const isAsc = this.sort.direction === 'asc';
+
+      const isAsc = this.sort.direction === 'desc';
       switch (this.sort.active) {
         case 'Id': return compare(+a.id, +b.id, isAsc);
         case 'Dienstname': return compare(a.name, b.name, isAsc);
         case 'Mitarbeiter': return compare(a.employeeId, b.employeeId, isAsc);
-        case 'Datum': return compare(a.datee, b.datee, isAsc);
+        case 'Datum': return compare(+a.datee, +b.datee, isAsc);
         default: return 0;
       }
     });
@@ -382,12 +414,15 @@ export class DialogOverviewExampleDialog {
     this.output = inputName + ";" + inputDate + ";" + inputAdress + ";" + emp;
     this.dialogRef.close();
   }
-  
 
-  showThings(service){
+
+  showThings(service) {
     console.log(service.employee.name);
-    
+
     this.selected = service.employee.name;
+  }
+  CancelDialog() {
+    this.dialogRef.close();
   }
 }
 //#endregion test
@@ -416,5 +451,27 @@ export class DialogOverviewAddDialog {
     this.test = inputName + ";" + inputDate + ";" + inputAdress + ";" + emp;
     this.dialogRef.close();
   }
+  CancelDialog() {
+    this.dialogRef.close();
+  }
 }
+
+@Component({
+  selector: 'dialog-overview-view-dialog',
+  templateUrl: 'dialog_viewData.html',
+})
+export class DialogOverviewViewDialog {
+  constructor(
+    userService: UserService,
+    public dialogRef: MatDialogRef<DialogOverviewAddDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: ServiceOutputClass) { }
+  test: string;
+  employees: Employee[];
+  service: ServiceOutputClass;
+  stringEmps: string[];
+  CancelDialog() {
+    this.dialogRef.close();
+  }
+}
+
 /* #endregion */
