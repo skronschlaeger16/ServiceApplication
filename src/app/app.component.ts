@@ -47,7 +47,7 @@ export interface ServiceClass {
 export class AppComponent implements AfterViewInit {
   name = 'Angular';
 
-  zoom: number = 3.8;
+  zoom: number = 2.15;
   lat: string = '';
   lng: string = '';
   location: Object;
@@ -105,14 +105,11 @@ export class AppComponent implements AfterViewInit {
 
   showInfo(serv:ServiceClass[]){
     serv.forEach(element => {
-      let mark:marker = {lat:element.latitude,lng:element.longitude,label:element.name,draggable:false};
+      let mark:marker = {lat:element.latitude,lng:element.longitude,label:element.name,draggable:false,};
       console.log(mark);
       this.markers.push(mark);
       this.refresh();
     });
-    
-
-
     console.log(this.markers);
   }
 }
