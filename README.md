@@ -1,5 +1,8 @@
 Angular Projekt: Sebastian Kronschläger, Lukas Humer, Florian Eggetsberger, Oliver Doppelbauer
 
+Backend
+https://github.com/skronschlaeger16/ServiceBackend.git
+
 Aufteilung
 https://docs.google.com/spreadsheets/d/1GkeGK-8POpy-Svm5T6EyMG5jZ79V_GUeo3vdsa4t31g/edit?usp=sharing
 
