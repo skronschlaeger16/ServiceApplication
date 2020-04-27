@@ -1,5 +1,12 @@
+Angular Projekt: Sebastian Kronschläger, Lukas Humer, Florian Eggetsberger, Oliver Doppelbauer
+
+Aufteilung
 https://docs.google.com/spreadsheets/d/1GkeGK-8POpy-Svm5T6EyMG5jZ79V_GUeo3vdsa4t31g/edit?usp=sharing
 
+
+
+Hello World:
+https://github.com/skronschlaeger16/ServiceApplication/blob/HelloWorld/Angular_Tutorial.pdf
 
 
 
