@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, Input, ReflectiveInjector, Optional, AfterViewInit , ElementRef} from '@angular/core';
+import { Component, Inject, OnInit, ViewChild, Input, ReflectiveInjector, Optional, AfterViewInit, ElementRef } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
@@ -21,6 +21,12 @@ export interface ServiceOutputClass {
   name: string;
   employeeId: number;
   date: string;
+  address: string;
+}
+
+export interface EmployeeOutputClass {
+  id: number;
+  name: string;
   address: string;
 }
 
@@ -54,7 +60,8 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   services2: ServiceOutputClass;
   map: Object;
   marker: Object;
-  location:Object;
+  location: Object;
+  addresses: Map<number, string>;
   @ViewChild('map') mapRef: ElementRef;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -70,13 +77,14 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     private userService: UserService,
     public dialog: MatDialog,
     public dialog_add: MatDialog,
-    private appcom:AppComponent
+    private appcom: AppComponent
   ) {
+
     super();
   }
   ngAfterViewInit(): void {
-    setTimeout(() => this.dataSource.sort = this.sort,1000);
-    setTimeout(() => this.fillEmps(),1000);
+    setTimeout(() => this.dataSource.sort = this.sort, 1000);
+    setTimeout(() => this.fillEmps(), 1000);
     // this.dataSource.sortingDataAccessor = ((data:any, sortHeaderId:string)=>{
     //   let toReturn: any;
     //   if(sortHeaderId === 'id')
@@ -106,7 +114,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 
   //     }) 
   //   });
-  
+
   // }
 
 
@@ -138,15 +146,24 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     this.userService.postService(serv);
   }
 
+
   ButtonClickDeleteService(id) {
     console.log(id);
     var x = confirm('Willst du wirklich löschen?');
     if (x == true) {
       this.userService.deleteService(id);//.subscribe(res => {
       this.refresh();
-      window.location.reload();
+
+      setTimeout(() => window.location.reload());
+      setTimeout(() => window.location.reload());
+
+      setTimeout(() => window.location.reload());
+      this.refresh();
+      this.refresh();
+
 
     }
+
     else {
       console.log('You pressed Cancel')
 
@@ -175,7 +192,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     //console.log(this.employees[this.services[id].name]);
     (<HTMLInputElement>document.getElementById("editName")).value = service.name;
     (<HTMLInputElement>document.getElementById("editDate")).value = service.date;
-    (<HTMLInputElement>document.getElementById("editAddress")).value = service.employee.address;
+    (<HTMLInputElement>document.getElementById("editAddress")).value = "";//"service.address";
     (<HTMLInputElement>document.getElementById("employee_select")).setAttribute("selected", service.employee.name);
 
     dialogRef.componentInstance.serviceId = id;
@@ -186,31 +203,39 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     dialogRef.afterClosed().subscribe(result => {
       let instance = dialogRef.componentInstance;
       this.editService(instance.output, service);
+
+      this.refresh();
+      this.refresh();
+      setTimeout(() => window.location.reload());
+      setTimeout(() => window.location.reload());
+      this.refresh();
+      this.refresh();
     });
-    this.refresh();
-    this.refresh();
+
 
   }
   editService(input: string, service: ServiceClass) {
-    if(typeof input !="undefined"){
-    var arr = input.split(';');
-    var x = this.employees.filter(d => d.name === arr[3]).find(first);
-    this.services2 = { id: service.id, employeeId: x.id, address: arr[2], date: arr[1], name: arr[0] };
-    console.log(this.services2);
+    if (typeof input != "undefined") {
+      var arr = input.split(';');
+      var x = this.employees.filter(d => d.name === arr[3]).find(first);
+      this.services2 = { id: service.id, employeeId: x.id, address: arr[2], date: arr[1], name: arr[0] };
+      console.log(this.services2);
 
-    var s = this.userService.putService(this.services2);
-    console.log(s);
+      var s = this.userService.putService(this.services2);
+      console.log(s);
+      this.refresh();
+      this.refresh();
+      this.refresh();
+      setTimeout(() => window.location.reload());
+      setTimeout(() => window.location.reload());
+      this.refresh();
 
-
-    this.refresh();
-    this.refresh();
-    this.refresh();
     }
-    else{
+    else {
       console.log("edit was canceled");
-      
+
     }
-    window.location.reload();
+
 
   }
   //#endregion
@@ -218,20 +243,91 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     console.log("Button_clicked_view_data");
     const dialogRef = this.dialog.open(DialogOverviewViewDialog, {
       width: '300px',
-      height: '515px',
+      height: '620px',
     });
     (<HTMLInputElement>document.getElementById("viewName")).value = service.name;
     (<HTMLInputElement>document.getElementById("viewEmployee")).value = service.employee.name;
     (<HTMLInputElement>document.getElementById("viewDate")).value = service.date;
-    (<HTMLInputElement>document.getElementById("viewAddress")).value = service.address;
+    (<HTMLInputElement>document.getElementById("longitude")).value = service.longitude;
+    (<HTMLInputElement>document.getElementById("latitude")).value = service.latitude;
+
     dialogRef.afterClosed().subscribe(result => {
       console.log(closed);
-        
+
+    });
+  }
+
+  ButtonClickViewEmp(employee) {
+
+    console.log("Button_clicked_view_emp");
+    const dialogRef = this.dialog.open(DialogOverviewViewEmpDialog, {
+      width: '300px',
+      height: '600px',
+    });
+    (<HTMLInputElement>document.getElementById("viewName")).value = employee.name;
+    (<HTMLInputElement>document.getElementById("viewLat")).value = employee.latitude;
+    (<HTMLInputElement>document.getElementById("viewLon")).value = employee.longitude;
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(closed);
+
     });
   }
 
 
+  ButtonClickAddEmployee() {
+    console.log("Button_add_emp_clicked");
+    let dialogRef = this.dialog_add.open(DialogOverviewAddEmployeeDialog, {
+      width: '300px',
+      height: '260px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      let instance = dialogRef.componentInstance;
+      console.log(instance.output);
+      this.addEmp(instance.output);
+    });
+  }
 
+  addEmp(input: string) {
+    if (typeof input != "undefined") {
+
+
+      var arr = input.split(';');
+      var inputName = arr[0];
+      var inputAdr = arr[1];
+      this.setTemp2();
+      if (this.employees.length != 0) {
+        let emp: EmployeeOutputClass = { id: this.temp + 1, address: inputAdr, name: inputName };
+        console.log(emp);
+        console.log("emp is not empty");
+        var s = this.userService.postEmployee(emp);
+        console.log(s);
+
+      }
+      else {
+        let emp: EmployeeOutputClass = { id: 0, address: inputAdr, name: inputName };
+        console.log(emp);
+        console.log("emp is empty");
+        var s = this.userService.postEmployee(emp);
+        console.log(s);
+      }
+
+
+      //var s = this.userService.postEmployee(emp);
+
+      //console.log(s);
+
+      this.refresh();
+      this.refresh();
+      setTimeout(() => {
+        window.location.reload();
+      }, 0);
+    }
+    else {
+      console.log("add was canceled");
+
+    }
+  }
 
   //#region addService
   ButtonClickAddNewService() {
@@ -239,7 +335,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     let dialogRef = this.dialog_add.open(DialogOverviewAddDialog, {
       width: '300px',
       height: '425px'
-      
+
     });
     dialogRef.componentInstance.employees = this.employees;
     dialogRef.componentInstance.stringEmps = this.stringEmps;
@@ -249,37 +345,46 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
       console.log(instance.test);
       setTimeout(() => this.setTemp);
       this.addService(instance.test, this.temp);
-      
+
     });
 
     this.refresh();
     this.refresh();
-    
+
   };
+
+  setTemp2() {
+    this.temp = this.employees[this.employees.length - 1].id;
+  }
 
   setTemp() {
     this.temp = this.services[this.services.length - 1].id;
   }
 
   addService(input: string, f: number) {
-    if(typeof input !="undefined"){
+    if (typeof input != "undefined") {
 
-    
-    var arr = input.split(';');
-    var x = this.employees.filter(d => d.name === arr[3]).find(first);
-    this.services2 = { id: f + 1, employeeId: x.id, address: arr[2], date: arr[1], name: arr[0] };
-    var s = this.userService.postService(this.services2);
-    console.log(s);
-    window.location.reload();
-    this.refresh();
-    this.refresh();
+
+      var arr = input.split(';');
+      var x = this.employees.filter(d => d.name === arr[3]).find(first);
+      this.services2 = { id: f + 1, employeeId: x.id, address: arr[2], date: arr[1], name: arr[0] };
+      var s = this.userService.postService(this.services2);
+      console.log(s);
+
+      this.refresh();
+      this.refresh();
+      this.refresh();
+      this.refresh();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+
     }
-    else{
+    else {
       console.log("add was canceled");
-      
     }
   }
-  //#endregion
+  //#endregion 
 
   connect(): Observable<ServiceClass[]> {
     // Combine everything that affects the rendered data into one update
@@ -407,8 +512,8 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 
       const isAsc = this.sort.direction === 'desc';
       switch (this.sort.active) {
-        case 'Id': return compare(+a.id, +b.id, isAsc);
-        case 'Dienstname': return compare(a.name, b.name, isAsc);
+        case 'id': return compare(+a.id, +b.id, isAsc);
+        case 'Dienstname': return compare(+a.name, +b.name, isAsc);
         case 'Mitarbeiter': return compare(a.employeeId, b.employeeId, isAsc);
         case 'Datum': return compare(+a.datee, +b.datee, isAsc);
         default: return 0;
@@ -455,6 +560,7 @@ export class DialogOverviewExampleDialog {
     this.selected = service.employee.name;
   }
   CancelDialog() {
+    this.output = "";
     this.dialogRef.close();
   }
 }
@@ -469,6 +575,9 @@ export class DialogOverviewAddDialog {
     public dialogRef: MatDialogRef<DialogOverviewAddDialog>,
     @Inject(MAT_DIALOG_DATA) public data: ServiceOutputClass) { }
   @Input() selected: string;
+  @Input() inputNameI: boolean;
+  @Input() inputNameB: boolean;
+
   test: string;
   employees: Employee[];
   service: ServiceOutputClass;
@@ -479,6 +588,31 @@ export class DialogOverviewAddDialog {
     var inputAdress = (<HTMLInputElement>document.getElementById("inputAdress")).value;
     var emp = this.selected;
     this.test = inputName + ";" + inputDate + ";" + inputAdress + ";" + emp;
+    this.dialogRef.close();
+  }
+  CancelDialog() {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog_addEmp.html',
+})
+export class DialogOverviewAddEmployeeDialog {
+  constructor(
+    userService: UserService,
+    public dialogRef: MatDialogRef<DialogOverviewAddEmployeeDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: ServiceOutputClass) { }
+  @Input() inputNameI: boolean;
+  @Input() inputNameB: boolean;
+
+
+  output: string;
+  ButtonAddEmpService() {
+    var inputName = (<HTMLInputElement>document.getElementById("inputEmpName")).value;
+    var inputAdress = (<HTMLInputElement>document.getElementById("inputAdr")).value;
+    this.output = inputName + ";" + inputAdress;
     this.dialogRef.close();
   }
   CancelDialog() {
@@ -499,6 +633,26 @@ export class DialogOverviewViewDialog {
   employees: Employee[];
   service: ServiceOutputClass;
   stringEmps: string[];
+
+  CancelDialog() {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'dialog-overview-view-dialog',
+  templateUrl: 'dialog_viewEmp.html',
+})
+export class DialogOverviewViewEmpDialog {
+  constructor(
+    userService: UserService,
+    public dialogRef: MatDialogRef<DialogOverviewViewEmpDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: ServiceOutputClass) { }
+  test: string;
+  employees: Employee[];
+  service: ServiceOutputClass;
+  stringEmps: string[];
+
   CancelDialog() {
     this.dialogRef.close();
   }
