@@ -1,0 +1,38 @@
+<div mat-dialog-content>
+    <h2 style="text-align: center;">Mitarbeiter Anzeigen:</h2>
+    
+      <mat-form-field>
+        <mat-label >Name:</mat-label>
+        <input disabled matInput>
+        <p></p>
+        <input class="font" id="viewName" disabled matInput>
+      </mat-form-field>
+    
+    <p>
+      <mat-form-field>
+        <mat-label>Latitude</mat-label>
+        <input disabled matInput>
+        <p></p>
+        <input class="font" disabled id="viewLat" matInput>
+      </mat-form-field>
+       
+  
+    </p>
+    <p>
+      <mat-form-field>
+        <mat-label>Longitude:</mat-label>
+        <input matInput disabled>
+        <p></p>
+        <input class="font" id="viewLon" matInput disabled>
+      </mat-form-field>
+    </p> 
+    <p>
+      <button (click)="CancelDialog()" style="
+      background-color: lightblue;" mat-raised-button>Zurück</button>
+
+  </div>
+  <style>
+    .font{
+      color: black;
+    }
+  </style>

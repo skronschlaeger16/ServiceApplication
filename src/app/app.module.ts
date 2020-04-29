@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatBadgeModule } from '@angular/material/badge';
-import { TableComponent, DialogOverviewExampleDialog, DialogOverviewAddDialog, DialogOverviewViewDialog } from './table/table.component';
+import { TableComponent, DialogOverviewExampleDialog, DialogOverviewAddDialog, DialogOverviewViewDialog,DialogOverviewAddEmployeeDialog,DialogOverviewViewEmpDialog } from './table/table.component';
 import { AppComponent } from './app.component';
 import { HelloComponent } from './hello.component';
 import { UserService } from './user.service';
@@ -38,10 +38,10 @@ import { GoogleMapsModule } from '@angular/google-maps';
         apiKey: 'AIzaSyDevYWt10ZqUp4ZAL_4LGnablUniR9Y9cQ'
       }),
     ],
-  declarations: [ AppComponent, HelloComponent, TableComponent, DialogOverviewAddDialog,DialogOverviewExampleDialog,DialogOverviewViewDialog],
+  declarations: [ AppComponent, HelloComponent, TableComponent, DialogOverviewAddDialog,DialogOverviewExampleDialog,DialogOverviewViewDialog,DialogOverviewAddEmployeeDialog,DialogOverviewViewEmpDialog],
   providers: [UserService],
   bootstrap:    [ AppComponent], 
   schemas:[CUSTOM_ELEMENTS_SCHEMA],
-  entryComponents: [DialogOverviewAddDialog,DialogOverviewExampleDialog,DialogOverviewViewDialog]
+  entryComponents: [DialogOverviewAddDialog,DialogOverviewExampleDialog,DialogOverviewViewDialog,DialogOverviewAddEmployeeDialog,DialogOverviewViewEmpDialog]
 })
 export class AppModule { }
