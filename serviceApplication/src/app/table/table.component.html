@@ -1,0 +1,56 @@
+<div class="mat-elevation-z8">
+  <mat-paginator #paginator
+  [length]="dataSource?.data.length"
+  [pageIndex]="0"
+  [pageSize]="50"
+  [pageSizeOptions]="[25, 50, 100, 250]">
+</mat-paginator>
+
+<mat-form-field class="search">
+  <mat-label>Search:</mat-label>
+  <input matInput>
+</mat-form-field>
+
+  <table mat-table class="full-width-table" matSort aria-label="Elements" >
+    <!-- Id Column -->
+    <ng-container matColumnDef="Id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+      <td mat-cell *matCellDef="let row">{{row.Id}}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="Dienstname">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Dienstname</th>
+      <td mat-cell *matCellDef="let row">{{row.Dienstname}}</td>
+    </ng-container>
+  
+    <ng-container matColumnDef="Mitarbeiter">
+      <th mat-header-cell *matHeaderCellDdef mat-sort-header>Mitarbeiter</th>
+      <td mat-cell *matCellDef="let row">{{row.Mitarbeiter}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Datum">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Datum</th>
+      <td mat-cell *matCellDef="let row">{{row.Datum}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Bearbeiten">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bearbeiten</th>
+      <td mat-cell *matCellDef="let row">{{row.Bearbeiten}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Loeschen">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Loeschen</th>
+      <td mat-cell *matCellDef="let row">{{row.Loeschen}}</td>
+      <!-- <md-cell *cdkCellDef="let row" >
+        <button matButton md-raised-button >Edit</button> 
+   </md-cell> -->
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  
+
+</div>

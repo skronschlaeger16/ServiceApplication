@@ -1,31 +1,53 @@
+
 <div style="text-align:center">
-    <h1>Service Application</h1>
+ 
+    <h1 style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ; font-size: 2.5rem;margin-top: 1rem; ">Service Application</h1>
 
 <app-table></app-table>
 
-<mat-nav-list>
+<!-- <mat-nav-list>
   <mat-list-item *ngFor="let service of services">
      <h4 matLine (click)="showInfo(service)">{{ service.name }}</h4>
   </mat-list-item>
 </mat-nav-list>
 
-<h1>Here's the user Details:</h1>
+<h1>Service Detail:</h1>
 <div *ngIf="selectedUser">
-  {{ selectedUser | json }}
-</div>
-<hr>
+  {{ selectedUser | json}}
+</div> -->
+<agm-map 
+  [latitude]="lat"
+  [longitude]="lng"
+  [zoom]="zoom"
+  [zoomControl]="true"
 
-<mat-button-toggle-group 
-  #group="matButtonToggleGroup" 
-  multiple=true>
-  <mat-button-toggle 
-    *ngFor="let image of images" 
-    value="image.id"  
-    matBadge="✔️" 
-    matBadgePosition="above after" 
-    matBadgeHidden="!selected" 
-    matBadgeColor="basic" 
-    style="padding-top:10px; padding-bottom:10px; margin:10px">
-      <img src="{{image.url}}" />
-  </mat-button-toggle>
-</mat-button-toggle-group>
+  
+  >
+
+  <agm-marker 
+      *ngFor="let m of markers; let i = index"
+ 
+      [latitude]="m.lat"
+      [longitude]="m.lng"
+      [label]="m.label"
+      [markerDraggable]="m.draggable"
+     >
+      
+    <agm-info-window>
+      <strong>InfoWindow content</strong>
+    </agm-info-window>
+    
+  </agm-marker>
+  
+ 
+</agm-map>
+<style>
+  agm-map{
+    height: 800px;
+    width: 1200px;
+    margin-top:3rem;
+    margin-bottom:3rem;
+   display: inline-block;
+   
+  }
+</style>

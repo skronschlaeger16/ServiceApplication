@@ -2,6 +2,7 @@
 {
   position: absolute;
   left: 2em;
+  padding-top: 1em;
 }
 table {
     width: 100%;
@@ -15,7 +16,7 @@ th.mat-sort-header-sorted {
   }
 
 .full-width-table {
-    padding-top: 3em;
+  padding-top: 4em;
     width: 100%;
     height: 100%;
     text-align: left;
@@ -25,12 +26,16 @@ th.mat-sort-header-sorted {
     position: absolute;
     left: 2em;
   }
-  .addItemButton
-  {
-      position: absolute;
-      
-      left: 2em;
-      background-color: green;
-      width: 30px;
-      height: 30px;
+.headFlo{
+  text-align: center;
+}
+.button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  margin-top: -4em;
   }
+.button-group button {
+  margin: 1em;
+  background-color: lightblue;
+}

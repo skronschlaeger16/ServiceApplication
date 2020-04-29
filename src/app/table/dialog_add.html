@@ -1,0 +1,46 @@
+<div mat-dialog-content>
+  <h2 style="text-align: center;">Service hinzufügen:</h2>
+  <p>
+    <mat-form-field>
+      <mat-label >Name:</mat-label>
+      <input id="inputName" [(ngModel)]='inputNameI' required  matInput>
+    
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+      <mat-label>Mitarbeiter</mat-label>
+      <mat-select [(value)]="selected" required >
+        <mat-option *ngFor="let p of stringEmps" [value]="p">
+          {{p}}
+
+        </mat-option>   </mat-select>
+    </mat-form-field>
+     
+  </p>
+
+  <p>
+    <mat-form-field>
+      <mat-label>Datum:</mat-label>
+      <input id="inputDate" matInput [matDatepicker]="picker" required>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field>
+      <mat-label>Adresse:</mat-label>
+      <input id="inputAdress" [(ngModel)]='inputNameB' required matInput>
+    </mat-form-field>
+  </p>
+  <p>
+    <button class="btn" [disabled] ="!inputNameI" [disabled]="!inputNameB" (click)="ButtonAddNewService()" style="margin-right: 10px;background-color: lightblue;" mat-raised-button>Hinzufügen</button>  
+    <button class="btn" (click)="CancelDialog()" style="
+    background-color: lightblue;" mat-raised-button>Zurück</button>
+  </p>
+</div>
+<style>
+  .btn{
+    display: inline-block;
+  }
+</style>

@@ -1,0 +1,20 @@
+<div mat-dialog-content>
+  <h2 style="text-align: center;">Mitarbeiter hinzufügen:</h2>
+  <mat-form-field>
+    <mat-label >Name:</mat-label>
+    <input id="inputEmpName" [(ngModel)]='inputNameI' required matInput >
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label >Adresse:</mat-label>
+    <input id="inputAdr" [(ngModel)]='inputNameB' required matInput>
+  </mat-form-field>
+  <p>
+    <button class="btn" [disabled] ="!inputNameI" [disabled] ="!inputNameB" (click)="ButtonAddEmpService()" style="margin-right: 10px;background-color: lightblue;" mat-raised-button>Hinzufügen</button>  
+    <button class="btn" (click)="CancelDialog()" style="background-color: lightblue;" mat-raised-button>Zurück</button>
+  </p>
+</div>
+<style>
+  .btn{
+    display: inline-block;
+  }
+</style>

@@ -1,0 +1,54 @@
+<div mat-dialog-content>
+    <h2 style="text-align: center;">Service Anzeigen:</h2>
+    
+      <mat-form-field>
+        <mat-label >Name:</mat-label>
+        <input disabled matInput>
+        <p></p>
+        <input class="font" id="viewName" disabled matInput>
+      </mat-form-field>
+    
+    <p>
+      <mat-form-field>
+        <mat-label>Mitarbeiter</mat-label>
+        <input disabled matInput>
+        <p></p>
+        <input class="font" disabled id="viewEmployee" matInput>
+      </mat-form-field>
+       
+  
+    </p>
+    <p>
+      <mat-form-field>
+        <mat-label>Datum:</mat-label>
+        <input matInput disabled>
+        <p></p>
+        <input class="font" id="viewDate" matInput disabled>
+      </mat-form-field>
+    </p> 
+    <p>
+      <mat-form-field>
+        <mat-label>Longitude:</mat-label>
+        <input matInput disabled>
+        <p></p>
+        <input class="font" id="longitude" matInput disabled>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field>
+        <mat-label>Latitude:</mat-label>
+        <input matInput disabled>
+        <p></p>
+        <input class="font" id="latitude" matInput disabled>
+      </mat-form-field>
+    </p>
+    <p>
+      <button (click)="CancelDialog()" style="
+      background-color: lightblue;" mat-raised-button>Zurück</button>
+
+  </div>
+  <style>
+    .font{
+      color: black;
+    }
+  </style>
