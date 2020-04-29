@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Employee, EmployeeOutputClass } from './table/table.component';
 
 export interface ServiceOutputClass {
   id: number;
@@ -17,8 +18,8 @@ export class UserService {
   private employeeUrl:string;
   serviceOutput: ServiceOutputClass;
   constructor(private http: HttpClient) {
-    this.serviceUrl = 'http://localhost:8080/services';
-    this.employeeUrl = 'http://localhost:8080/employees'
+    this.serviceUrl = 'http://localhost:9001/services';
+    this.employeeUrl = 'http://localhost:9001/employees'
 
   }
 
@@ -27,7 +28,6 @@ export class UserService {
   }
 
   deleteService(id: number){
-    
     return this.http.delete(this.serviceUrl+'/'+ id).subscribe(data => console.log(data));
     //return this.http.delete(this.userUrl,value).subscribe(data => console.log(data));
   } 
@@ -41,6 +41,11 @@ export class UserService {
   postService(value: ServiceOutputClass){
     console.log(value);
     return this.http.post(this.serviceUrl,value).subscribe(data=>console.log(data));
+  }
+
+  postEmployee(value:EmployeeOutputClass){
+    console.log(value);
+    return this.http.post(this.employeeUrl,value).subscribe(data=>console.log(data));
   }
 
   getEmployees(){
