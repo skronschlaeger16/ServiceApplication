@@ -3,8 +3,10 @@ import { ViewChild } from '@angular/core';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
-import { timeout } from 'rxjs/operators';
+import { timeout, reduce } from 'rxjs/operators';
 import { element } from 'protractor';
+import { Employee } from './table/table.component';
+import { mixinColor } from '@angular/material/core';
 
 interface Location {
   latitude: string;
@@ -55,24 +57,24 @@ export class AppComponent implements AfterViewInit {
   label: Object;
   images;
   servicesInDb: ServiceClass[];
+  employeesInDb:Employee[];
   selectedUser;
   markers:marker[] = [];
+  markers2:marker[]=[];
   constructor( private userService: UserService) { }
   ngAfterViewInit(): void {
- 
+    this.userService.getEmployees()
+      .subscribe((employees: Employee[]) => {
+        this.employeesInDb = employees;
+      });
     setTimeout(() =>
       this.userService.getServices()
         .subscribe((services: ServiceClass[]) => {
           this.servicesInDb = services;
-          this.showInfo(this.servicesInDb);
+          this.showInfo(this.servicesInDb,this.employeesInDb);
     }));
     console.log("before showInfo");
     
-    
-    // this.label = {
-    //   color: 'black',
-    //   text: 
-    // }
         
   }
 
@@ -103,7 +105,7 @@ export class AppComponent implements AfterViewInit {
       });
   }
 
-  showInfo(serv:ServiceClass[]){
+  showInfo(serv:ServiceClass[],emps:Employee[]){
     serv.forEach(element => {
       let mark:marker = {
         lat:element.latitude,
@@ -115,6 +117,18 @@ export class AppComponent implements AfterViewInit {
       this.markers.push(mark); 
       this.refresh();
     });
+
+    emps.forEach(element =>{
+      let mark2:marker={
+        lat:element.latitude.toString(),
+        lng:element.longitude.toString(),
+        label:element.name,
+        draggable:false
+      };
+      
+      this.markers2.push(mark2); 
+      this.refresh();
+    })
     console.log(this.markers);
   }
 }

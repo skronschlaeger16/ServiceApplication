@@ -264,7 +264,6 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 
 
   /* #region(collapsed) AddEmployee */
-
   ButtonClickAddEmployee() {
     console.log("Button_add_emp_clicked");
     let dialogRef = this.dialog_add.open(DialogOverviewAddEmployeeDialog, {
