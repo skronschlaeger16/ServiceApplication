@@ -1,21 +1,22 @@
-Angular Projekt: Sebastian Kronschläger, Lukas Humer, Florian Eggetsberger, Oliver Doppelbauer
+# Angular Projekt
+Sebastian Kronschläger, Lukas Humer, Florian Eggetsberger, Oliver Doppelbauer
 
-Backend
+## Backend
 https://github.com/skronschlaeger16/ServiceBackend.git
 
-Aufteilung
+## Aufteilung
 https://docs.google.com/spreadsheets/d/1GkeGK-8POpy-Svm5T6EyMG5jZ79V_GUeo3vdsa4t31g/edit?usp=sharing
 
-Bericht
+## Bericht
 https://github.com/skronschlaeger16/ServiceApplication/blob/Bericht/Angular_Bericht.docx
 
-Quellenverzeichnis und Kurzbericht
+## Quellenverzeichnis und Kurzbericht
 https://github.com/skronschlaeger16/ServiceApplication/blob/HelloWorld/Angular_Tutorial.pdf
 
-Hello World Datei
+## Hello World Datei
 https://github.com/skronschlaeger16/ServiceApplication/tree/HelloWorld
 
-Präsentation
+## Präsentation
 https://github.com/skronschlaeger16/ServiceApplication/blob/Bericht/Angular.pptx
 
 
