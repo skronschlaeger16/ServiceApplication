@@ -19,6 +19,8 @@ https://github.com/skronschlaeger16/ServiceApplication/tree/HelloWorld
 ## Präsentation
 https://github.com/skronschlaeger16/ServiceApplication/blob/Bericht/Angular.pptx
 
+## Terminal Eingaben
+https://github.com/skronschlaeger16/ServiceApplication/blob/Bericht/TerminalEingaben.txt
 
 ## Weitere Links und Extensions
 Auch mit vsCode Extention Liveshare gearbeitet.
