@@ -2,14 +2,12 @@
 
 
 <div class="mat-elevation-z8">
-   
-
+<div>
   <mat-form-field class="search">
     <mat-label>Suche:</mat-label>
     <input matInput (keyup)="applyFilter($event.target.value)">
   </mat-form-field>
 
-  <button (click)="ButtonClickAddNewService()" mat-raised-button class="addItemButton" >Hinzufügen</button>  
 <table mat-table class="full-width-table" mat-table [dataSource]="dataSource"  matSort>
 
   
@@ -33,7 +31,7 @@
   <!-- phone Column -->
   <ng-container matColumnDef="Mitarbeiter">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Mitarbeiter </th>
-    <td mat-cell *matCellDef="let element"> {{element.employee.name}} </td>
+    <td (click)="ButtonClickViewEmp(element.employee)" mat-cell *matCellDef="let element"> {{element.employee.name}} </td>
   </ng-container>
 
   <ng-container matColumnDef="Datum">
@@ -62,33 +60,15 @@
       <mat-icon (click)="ButtonClickViewData(element)">description</mat-icon>
   </td>
   </ng-container>
-
-  <!-- website Column -->
-  <!-- <ng-container matColumnDef="website">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Website </th>
-    <td mat-cell *matCellDef="let element"> {{element.website}} </td>
-  </ng-container> -->
-
-  <!-- <ng-container matColumnDef="action">
-    <th mat-header-cell *matHeaderCellDef> Action </th>
-    <td mat-cell *matCellDef="let element">
-      <mat-icon (click)="editUser(element)">edit</mat-icon>
-    </td>
-  </ng-container> -->
-
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> 
 </table>
 
-<!-- <mat-paginator #paginator
-[length]="dataSource?.data.length"
-[pageIndex]="0"
-[pageSize]="1"
-[pageSizeOptions]="[1,25, 50, 100, 250]">
-</mat-paginator> -->
 <mat-paginator [pageSizeOptions]="[5,10,15,25]" ></mat-paginator>
-<!-- <div>
-  <button 
-  id="button_location" style="height: 50px">Map Map 
-   </button>
-</div> -->
+
+<div class="button-group">
+  <button (click)="ButtonClickAddNewService()" mat-raised-button class="button" >Service hinzufügen</button>  
+  <button (click)="ButtonClickAddEmployee()" mat-raised-button class="button" >Mitarbeiter hinzufügen</button>  
+</div>
+
+<div>
