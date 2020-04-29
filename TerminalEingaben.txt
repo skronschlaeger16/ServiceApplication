@@ -1,0 +1,19 @@
+Wenn man clone Repository macht, muss man folgende Befehle im Terminal schreiben um Angular richtig nutzen zu können:
+
+npm install -g @angular/cli
+
+npm install @angular/material @angular/cdk @angular/animations --save
+
+ng add @angular/material
+  Theme Indigo/Pink auswählen
+  Yes
+  Yes
+
+mit cd {namenDesProjekts} in den Projektfolder gehen
+
+ng serve
+
+Falls Port belegt: ng serve --port {portNr}
+
+
+
