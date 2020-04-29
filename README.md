@@ -22,8 +22,9 @@ https://github.com/skronschlaeger16/ServiceApplication/blob/Bericht/Angular.pptx
 
 Auch mit vsCode Extention Liveshare gearbeitet.
 
-
-
+Region Folding in vscode 
+https://marketplace.visualstudio.com/items?itemName=maptz.regionfolder
+Extension: #region folding for VS Code
 
 
 # ServiceApplication
