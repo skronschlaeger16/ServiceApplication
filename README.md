@@ -6,11 +6,11 @@ https://github.com/skronschlaeger16/ServiceBackend.git
 Aufteilung
 https://docs.google.com/spreadsheets/d/1GkeGK-8POpy-Svm5T6EyMG5jZ79V_GUeo3vdsa4t31g/edit?usp=sharing
 
-
-
-Hello World:
+Hello World
 https://github.com/skronschlaeger16/ServiceApplication/blob/HelloWorld/Angular_Tutorial.pdf
 
+Bericht
+https://github.com/skronschlaeger16/ServiceApplication/blob/Bericht/Angular_Bericht.docx
 
 
 # ServiceApplication
