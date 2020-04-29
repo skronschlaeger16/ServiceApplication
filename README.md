@@ -15,7 +15,14 @@ https://github.com/skronschlaeger16/ServiceApplication/blob/HelloWorld/Angular_T
 Hello World Datei
 https://github.com/skronschlaeger16/ServiceApplication/tree/HelloWorld
 
-Auch über Liveshare gearbeitet
+Präsentation
+https://github.com/skronschlaeger16/ServiceApplication/blob/Bericht/Angular.pptx
+
+
+
+Auch mit vsCode Extention Liveshare gearbeitet.
+
+
 
 
 
