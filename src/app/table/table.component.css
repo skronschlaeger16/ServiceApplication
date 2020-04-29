@@ -1,0 +1,36 @@
+.search
+{
+  position: absolute;
+  left: 2em;
+}
+table {
+    width: 100%;
+  }
+  mat-icon {
+    cursor: pointer;
+  }
+
+th.mat-sort-header-sorted {
+    color: black;
+  }
+
+.full-width-table {
+    padding-top: 3em;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+  }
+.search
+  {
+    position: absolute;
+    left: 2em;
+  }
+  .addItemButton
+  {
+      position: absolute;
+      
+      left: 2em;
+      background-color: green;
+      width: 30px;
+      height: 30px;
+  }
