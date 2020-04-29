@@ -18,8 +18,12 @@ export class UserService {
   private employeeUrl:string;
   serviceOutput: ServiceOutputClass;
   constructor(private http: HttpClient) {
-    this.serviceUrl = 'http://localhost:9001/services';
-    this.employeeUrl = 'http://localhost:9001/employees'
+    //Falls Port belegt, bitte hier ändern 
+    this.serviceUrl = 'http://localhost:8080/services';
+    this.employeeUrl = 'http://localhost:8080/employees'
+    //und im Backend unter application.properties 
+    //server.port = deinPort    schreiben
+
 
   }
 

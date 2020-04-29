@@ -45,6 +45,11 @@ export interface Employee {
   longitude: number;
   name: string;
 }
+
+export interface AddressModel{
+  name: string;
+  address: string;
+}
 declare var google: any;
 
 @Component({
@@ -61,7 +66,8 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   map: Object;
   marker: Object;
   location: Object;
-  addresses: Map<number, string>;
+  addressesEmployees: AddressModel[]=[];
+  addressesServices: AddressModel[]=[];
   @ViewChild('map') mapRef: ElementRef;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -85,37 +91,9 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   ngAfterViewInit(): void {
     setTimeout(() => this.dataSource.sort = this.sort, 1000);
     setTimeout(() => this.fillEmps(), 1000);
-    // this.dataSource.sortingDataAccessor = ((data:any, sortHeaderId:string)=>{
-    //   let toReturn: any;
-    //   if(sortHeaderId === 'id')
-    //   toReturn = data[sortHeaderId];
-
-    // });
-
-
-
-
 
   }
-  // updateMap()
-  // {
-  //   this.userService.getServices()
-  //   .subscribe((services: ServiceClass[]) => {
-  //     this.services = services;
-  //     this.dataSource = new MatTableDataSource(services);
 
-  //     setTimeout(() => this.dataSource.sort = this.sort);
-  //     setTimeout(() => this.dataSource.paginator = this.paginator);
-  //   });
-
-  //   this.services.forEach(element => {
-  //     this.map = new google.maps.Map(this.mapRef.nativeElement,{
-  //       center: {lat: element.longitude, long: element.latitude}
-
-  //     }) 
-  //   });
-
-  // }
 
 
   ngOnInit() {
@@ -146,6 +124,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     this.userService.postService(serv);
   }
 
+  /* #region(collapsed) Delete */
 
   ButtonClickDeleteService(id) {
     console.log(id);
@@ -164,18 +143,20 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 
     }
 
+
     else {
       console.log('You pressed Cancel')
 
     }
 
-    // this.dataSource.this.paginator = this.paginator;
-
-
 
 
   }
-  //#region editService
+  /* #endregion */
+
+
+  /* #region(collapsed) EditService */
+
   ButtonClickEditService(service) {
     console.log("Button_edit_clicked");
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
@@ -238,7 +219,11 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 
 
   }
-  //#endregion
+  /* #endregion */
+
+
+  /* #region(collapsed) View */
+
   ButtonClickViewData(service) {
     console.log("Button_clicked_view_data");
     const dialogRef = this.dialog.open(DialogOverviewViewDialog, {
@@ -264,6 +249,8 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
       width: '300px',
       height: '600px',
     });
+    console.log(this.addressesEmployees);
+    
     (<HTMLInputElement>document.getElementById("viewName")).value = employee.name;
     (<HTMLInputElement>document.getElementById("viewLat")).value = employee.latitude;
     (<HTMLInputElement>document.getElementById("viewLon")).value = employee.longitude;
@@ -273,7 +260,10 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 
     });
   }
+  /* #endregion */
 
+
+  /* #region(collapsed) AddEmployee */
 
   ButtonClickAddEmployee() {
     console.log("Button_add_emp_clicked");
@@ -302,7 +292,6 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
         console.log("emp is not empty");
         var s = this.userService.postEmployee(emp);
         console.log(s);
-
       }
       else {
         let emp: EmployeeOutputClass = { id: 0, address: inputAdr, name: inputName };
@@ -313,23 +302,21 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
       }
 
 
-      //var s = this.userService.postEmployee(emp);
-
-      //console.log(s);
-
       this.refresh();
       this.refresh();
       setTimeout(() => {
         window.location.reload();
-      }, 0);
+      }, 1000);
     }
     else {
       console.log("add was canceled");
 
     }
   }
+  /* #endregion */
 
-  //#region addService
+
+  /* #region(collapsed) AddNewService */
   ButtonClickAddNewService() {
     console.log("Button_add_clicked");
     let dialogRef = this.dialog_add.open(DialogOverviewAddDialog, {
@@ -352,14 +339,6 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     this.refresh();
 
   };
-
-  setTemp2() {
-    this.temp = this.employees[this.employees.length - 1].id;
-  }
-
-  setTemp() {
-    this.temp = this.services[this.services.length - 1].id;
-  }
 
   addService(input: string, f: number) {
     if (typeof input != "undefined") {
@@ -384,7 +363,18 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
       console.log("add was canceled");
     }
   }
-  //#endregion 
+
+  /* #endregion */
+
+  setTemp2() {
+    this.temp = this.employees[this.employees.length - 1].id;
+  }
+
+  setTemp() {
+    this.temp = this.services[this.services.length - 1].id;
+  }
+
+
 
   connect(): Observable<ServiceClass[]> {
     // Combine everything that affects the rendered data into one update
@@ -401,6 +391,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   }
 
   /* #region(collapsed) Refresh */
+
   refresh() {
     setTimeout(() => {
       this.userService.getServices()
@@ -493,7 +484,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
    * this would be replaced by requesting the appropriate data from the server.
    */
 
-
+  /* #region(collapsed) Sort+Paginator */
   private getPagedData(data: ServiceClass[]) {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     return data.splice(startIndex, this.paginator.pageSize);
@@ -524,6 +515,8 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 function compare(a: string | number, b: string | number, isAsc: boolean) {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
+
+/* #endregion */
 
 
 /* #region(collapsed) Dialogs */

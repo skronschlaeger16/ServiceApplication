@@ -15,7 +15,7 @@ interface marker {
 	lat: string;
 	lng: string;
 	label?: string;
-	draggable: boolean;
+  draggable: boolean;
 }
 
 export interface ServiceClass {
@@ -105,9 +105,14 @@ export class AppComponent implements AfterViewInit {
 
   showInfo(serv:ServiceClass[]){
     serv.forEach(element => {
-      let mark:marker = {lat:element.latitude,lng:element.longitude,label:element.name,draggable:false,};
+      let mark:marker = {
+        lat:element.latitude,
+        lng:element.longitude,
+        label:element.name,
+        draggable:false
+      };
       console.log(mark);
-      this.markers.push(mark);
+      this.markers.push(mark); 
       this.refresh();
     });
     console.log(this.markers);
