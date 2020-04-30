@@ -17,6 +17,12 @@
   <!-- name Column -->
 
 
+  <ng-container matColumnDef="Erledigt">
+    <th mat-header-cell *matHeaderCellDef> Erledigt </th>
+    <td mat-cell *matCellDef="let element">
+      <mat-checkbox (change)="deleteServiceChecked(element)"></mat-checkbox>
+  </td>
+  </ng-container>
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
     <td mat-cell *matCellDef="let element"> {{element.id}} </td>

@@ -23,6 +23,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
 import {AgmCoreModule} from '@agm/core'
+import {MatCheckboxModule} from '@angular/material/checkbox'
 
 
 import {MatSortModule} from '@angular/material/sort'; 
@@ -33,7 +34,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
   imports:      [
     MatDialogModule,BrowserModule, FormsModule, HttpClientModule, BrowserAnimationsModule, MatTableModule, MatIconModule,
       MatInputModule ,MatFormFieldModule,MatTableModule, MatInputModule, MatButtonModule, MatListModule, MatButtonToggleModule, MatBadgeModule, MatPaginatorModule,
-      MatNativeDateModule,MatDatepickerModule,MatSelectModule,MatFormFieldModule,MatSortModule,
+      MatNativeDateModule,MatDatepickerModule,MatSelectModule,MatFormFieldModule,MatSortModule,MatCheckboxModule,
       AgmCoreModule.forRoot({
         apiKey: 'AIzaSyDevYWt10ZqUp4ZAL_4LGnablUniR9Y9cQ'
       }),

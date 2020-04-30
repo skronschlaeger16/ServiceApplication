@@ -59,7 +59,7 @@ declare var google: any;
 })
 export class TableComponent extends DataSource<ServiceClass> implements OnInit, AfterViewInit {
   //, 'Actions'
-  displayedColumns: string[] = ['id', 'Dienstname', 'Mitarbeiter', 'Datum', 'Bearbeiten', 'Loeschen', 'Anzeigen'];
+  displayedColumns: string[] = ['Erledigt','id', 'Dienstname', 'Mitarbeiter', 'Datum', 'Bearbeiten', 'Loeschen', 'Anzeigen'];
   dataSource;
   service;
   services2: ServiceOutputClass;
@@ -90,7 +90,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
   }
   ngAfterViewInit(): void {
     setTimeout(() => this.dataSource.sort = this.sort, 1000);
-    setTimeout(() => this.fillEmps(), 1000);
+    setTimeout(() => this.fillEmps(), 0);
 
   }
 
@@ -126,6 +126,25 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
 
   /* #region(collapsed) Delete */
 
+  deleteServiceChecked(service){
+    
+    setTimeout(() => {
+      this.userService.deleteService(service.id);//.subscribe(res => {
+      this.refresh();
+
+      setTimeout(() => window.location.reload());
+      setTimeout(() => window.location.reload());
+
+      setTimeout(() => window.location.reload());
+      this.refresh();
+      this.refresh();
+      
+    }, 125);
+    
+  }
+
+  
+  
   ButtonClickDeleteService(id) {
     console.log(id);
     var x = confirm('Willst du wirklich löschen?');
@@ -247,7 +266,7 @@ export class TableComponent extends DataSource<ServiceClass> implements OnInit, 
     console.log("Button_clicked_view_emp");
     const dialogRef = this.dialog.open(DialogOverviewViewEmpDialog, {
       width: '300px',
-      height: '600px',
+      height: '415px',
     });
     console.log(this.addressesEmployees);
     
@@ -529,6 +548,8 @@ export class DialogOverviewExampleDialog {
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     @Inject(MAT_DIALOG_DATA) public data: ServiceClass) { }
   @Input() selected: string;
+  @Input() inputAddressI: boolean;
+
   employees: Employee[];
   output: string;
   serviceId: number;

@@ -56,6 +56,10 @@ export class UserService {
     return this.http.get(this.employeeUrl);
   }
 
+  deleteEmployee(id: number){
+    return this.http.delete(this.employeeUrl + '/' + id).subscribe(data => console.log(data));
+  }
+
 //   setUser(user) {
 //     let userId = user.id;
 //     delete user.id;
