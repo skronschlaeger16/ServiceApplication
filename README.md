@@ -22,6 +22,10 @@ https://github.com/skronschlaeger16/ServiceApplication/blob/Bericht/Angular.pptx
 ## Terminal Eingaben
 https://github.com/skronschlaeger16/ServiceApplication/blob/Bericht/TerminalEingaben.txt
 
+## Design
+https://github.com/skronschlaeger16/ServiceApplication/blob/FrontendLuke/Benutzeroberfl%C3%A4che_.pdf
+
+
 ## Weitere Links und Extensions
 Auch mit vsCode Extention Liveshare gearbeitet.
 
